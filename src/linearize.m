@@ -1,14 +1,15 @@
-function [A, B, C, D] = linearize(system_dyn, x_linearization_point, ...
-    u_linearization_point, observation_matrix)
+function [A, B, C, D] = linearize(system_dynamics, measurement_model, ...
+    x_linearization_point, ...
+    u_linearization_point)
 
     n_x = length(x_linearization_point);
     n_u = length(u_linearization_point);
 
     x = sym('x', [1 n_x])';
     u = sym('x', [1 n_u])';
-    y = observation_matrix*x;
+    y = measurement_model(x);
     
-    f  = system_dyn(x, u);
+    f  = system_dynamics(x, u);
     subs([x; u], [x_linearization_point; u_linearization_point] );
 
     A = jacobian(f, x);
