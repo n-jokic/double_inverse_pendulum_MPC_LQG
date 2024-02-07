@@ -1,8 +1,9 @@
 function xdot = system_dynamics(x, u)
     %parameters
     load parameters.mat J0 J2 Ka1 Ka2 Kf Lcm2 Le1 m2 g Kt R Lb
-
+    
     %states
+    
     x1 = x(1); % aplha - horizontal arm angle
     x2 = x(2); % alpha_dot - horizontal arm angular speed
     x3 = x(3); % beta - Pendulum angle
@@ -25,7 +26,6 @@ function xdot = system_dynamics(x, u)
     x5_dot = (-Kt*x2 - R*x5 + u)/Lb;
     
     xdot = [x1_dot;x2_dot; x3_dot; x4_dot; x5_dot];
-    
 
 
 end
