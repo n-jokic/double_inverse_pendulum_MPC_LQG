@@ -17,7 +17,7 @@ Lb = 3/1000; % Electric impendance of the motor (imaginary part) [H]
 R = 2.266; % Electric internal resistance of the motor [ohm]
 Kt = 0.696; % Counter-electromotive force term, coupling the angular speed and current of the motor [V*s]
 Kf = 3.377; % Torque produced by the motor per current unit [V*s]
-g = 9.81;
+g = 9.81; % [m/s^2]
 
 save('parameters', 'Le1', 'J0', 'Ka1', 'm2', 'Lcm2', 'J2', 'Ka2',...
     'Lb', 'R', 'Kt', 'Kf', 'g');
