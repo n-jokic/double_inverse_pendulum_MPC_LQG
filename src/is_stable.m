@@ -1,4 +1,4 @@
-function [bool_value, system_eigenvalues] = is_stable(A, B, C, D)
+function [bool_value, G, system_eigenvalues] = is_stable(A, B, C, D)
     syms s 
 
     G = C*(s*eye(5) - A)^-1*B;
@@ -7,8 +7,8 @@ function [bool_value, system_eigenvalues] = is_stable(A, B, C, D)
 
     [~, den] = ss2tf(double(A), double(B), double(C), double(D));
     system_eigenvalues = roots(den);
-    bool_value = all(real(poles) <= 0);
-    
+    bool_value = all(real(system_eigenvalues) <= 0);
+
 end
 
 
