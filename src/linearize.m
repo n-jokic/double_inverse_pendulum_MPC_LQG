@@ -4,9 +4,17 @@ function [A, B, C, D] = linearize(system_dynamics, measurement_model, ...
 
     n_x = length(x_linearization_point);
     n_u = length(u_linearization_point);
+    
+    x = sym('x', [1 n_x]);
+    u = sym('u', [1 n_u]);
 
-    x = sym('x', [1 n_x])';
-    u = sym('x', [1 n_u])';
+    if n_x > 1
+        x = x';
+    end
+
+    if n_u > 1
+        u = u';
+    end
     y = measurement_model(x);
     
     f  = system_dynamics(x, u);
