@@ -1,24 +1,14 @@
-function [A, B, C, D] = linearize(system_dynamics, measurement_model, ...
-    x_linearization_point, ...
-    u_linearization_point)
+function [A, B, C, D] = linearize(x_linearization_point, u_linearization_point)
 
     n_x = length(x_linearization_point);
-    n_u = length(u_linearization_point);
-    
-    x = sym('x', [1 n_x]);
-    u = sym('u', [1 n_u]);
+%     n_u = length(u_linearization_point);
 
-    if n_x > 1
-        x = x';
-    end
-
-    if n_u > 1
-        u = u';
-    end
-    y = measurement_model(x);
+    x = reshape(sym('x', [1 n_x]),n_x,1);
+    u = sym('u');
+    y = inverted_pendulum_measurement(x);
     
-    f  = system_dynamics(x, u);
-    subs([x; u], [x_linearization_point; u_linearization_point] );
+    f  = inverted_pendulum(x, u);
+   % subs([x; u], [x_linearization_point; u_linearization_point] );
 
     A = jacobian(f, x);
     A = double(subs(A, [x; u], ...
