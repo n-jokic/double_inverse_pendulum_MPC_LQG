@@ -9,16 +9,17 @@ function [A, B, C, D] = linearize(system_dynamics, measurement_model, ...
     u = sym('u', [1 n_u]);
 
     if n_x > 1
-        x = x';
+        x = transpose(x);
     end
 
     if n_u > 1
-        u = u';
+        u = transpose(u);
     end
     y = measurement_model(x);
     
+    display(x);
     f  = system_dynamics(x, u);
-    subs([x; u], [x_linearization_point; u_linearization_point] );
+   
 
     A = jacobian(f, x);
     A = double(subs(A, [x; u], ...
