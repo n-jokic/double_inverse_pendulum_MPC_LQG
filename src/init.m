@@ -21,6 +21,9 @@ g = 9.81; % [m/s^2]
 
 save('parameters', 'Le1', 'J0', 'Ka1', 'm2', 'Lcm2', 'J2', 'Ka2',...
     'Lb', 'R', 'Kt', 'Kf', 'g');
+
+u_min = -5;
+u_max = 5;
 %% Simulation params:
 dt = 0.01;  % Sampling time [s]
 t_end = 10;  % Simuation duration [s]

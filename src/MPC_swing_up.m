@@ -28,11 +28,11 @@ classdef MPC_swing_up < handle
         Rw = 1/25;
         Ow = [1, 0, 0, 0, 0; 0, 0, 1, 0, 0];
         Qwobs = [(1/pi*180)^2*0, 0; 0 (1/pi*180)^2];
-        gamma1 = 10;
+        gamma1 = 1;
         gamma2 = 1;
 
         % NLP setup
-        max_iter = 500;
+        max_iter = 2000;
 
         % MPC solver 
         solver
@@ -78,8 +78,8 @@ classdef MPC_swing_up < handle
             obj.dt = dt;
             obj.N = N;
             
-            u0 = zeros(obj.N*obj.n_controls, 1); 
-            X0 = repmat(zeros(1, obj.n_states), 1,obj.N+1)';
+            u0 = randn(obj.N*obj.n_controls, 1)*2; 
+            X0 = repmat(randn(1, obj.n_states)*3, 1,obj.N+1)';
             obj.x0  = [X0; u0];
             obj.p = zeros(obj.n_states + obj.n_reference, 1);
 
@@ -155,8 +155,8 @@ classdef MPC_swing_up < handle
 
             opts = struct;
             opts.ipopt.max_iter = obj.max_iter;
-            opts.ipopt.acceptable_tol =1e-8;
-            opts.ipopt.acceptable_obj_change_tol = 1e-6;
+            opts.ipopt.acceptable_tol =1e-6;
+            opts.ipopt.acceptable_obj_change_tol = 1e-4;
             opts.ipopt.print_level =3;%0,3
             opts.print_time = 0;
 
@@ -165,8 +165,8 @@ classdef MPC_swing_up < handle
             obj.args = struct;
             
             % equality constraints: 
-            obj.args.lbg(1:obj.n_states*(obj.N+1), 1) = 0;  
-            obj.args.ubg(1:obj.n_states*(obj.N+1), 1) = 0;
+            obj.args.lbg(1:obj.n_states*(obj.N+1), 1) = 1e-5;  
+            obj.args.ubg(1:obj.n_states*(obj.N+1), 1) = 1e-5;
             
             % state constraints
             obj.args.lbx(1:obj.n_states*(obj.N+1), 1) = -inf;  
@@ -232,23 +232,21 @@ classdef MPC_swing_up < handle
         end
 
         function plot_trajectories(obj)
-            figure(1);
+            figure();
             hold all;
             t = 0:length(obj.u_mpc)-1;
             t = t*obj.dt + obj.num_steps*obj.dt;
 
             stairs(t, obj.u_mpc, 'k--');
-            plot(t(1),  obj.u_mpc(1), '*');
-
-            figure(2);
+           
+            figure();
             hold all;
             t = 0:length(obj.x_mpc)-1;
             t = t*obj.dt + obj.num_steps*obj.dt;
 
             plot(t, obj.x_mpc(:, 1)/pi*180, 'k--');
-            plot(t(1),  obj.x_mpc(1, 1)/pi*180, '*');
             plot(t, obj.x_mpc(:, 3)/pi*180, 'k--');
-            plot(t(1),  obj.x_mpc(1, 3)/pi*180, '*');
+       
 
         end
     end
