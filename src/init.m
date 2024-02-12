@@ -32,11 +32,11 @@ x0 = [0;0;0;0;0];
 % Initial control
 u0 = 0;
 %%
-disp('Energy control');
-run('energy_control_controller.m');
+% disp('Energy control');
+% run('energy_control_controller.m');
 
 disp('Exponential Pendium control');
 run('exp_pendium_controler.m');
 
-disp('Energy shaping control');
-run('energy_shaping_controller.m');
+% disp('Energy shaping control');
+% run('energy_shaping_controller.m');

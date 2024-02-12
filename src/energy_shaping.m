@@ -3,10 +3,11 @@ function u = energy_shaping(x)
     umax = 5;
     umin = -5;
     
-    k1 = 2; % k1 > 0
-    k2 = 5.0; % k2 > 0
     
-    u = k1*(x(2) + k2*cos(x(3))*x(4));
+    k1 = 2/10; % k1 > 0
+    k2 = 10; % k2 > 0
+    
+    u = k1*x(2) + k2*cos(x(3))*x(4);
     
     if u > umax
         u = umax;

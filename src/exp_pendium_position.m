@@ -4,8 +4,8 @@ function u = exp_pendium_position(x)
     umax = 5;
     umin = -5;
     
-    kv = 0.665*2;
-    n = 2.15;
+    kv = 3;
+    n = 2;
     
     u = kv*abs(x(3)^n);
     
