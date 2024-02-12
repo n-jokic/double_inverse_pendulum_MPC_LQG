@@ -20,12 +20,19 @@ classdef MPC_swing_up < handle
         n_reference = 2;
 
         % Weighting matricies
-        Qw = eye(2)/pi*180;
-        Rw = 1e-3;
+        Qw = [(1/pi*180)^2, 0, 0, 0, 0; 
+               0, (1/2)^2, 0, 0, 0;
+               0, 0, (1/pi*180)^2, 0, 0;
+               0, 0, 0, (1/2)^2, 0 
+               0, 0, 0, 0, 1];
+        Rw = 1/25;
         Ow = [1, 0, 0, 0, 0; 0, 0, 1, 0, 0];
+        Qwobs = [(1/pi*180)^2*0, 0; 0 (1/pi*180)^2];
+        gamma1 = 10;
+        gamma2 = 1;
 
         % NLP setup
-        max_iter = 2000;
+        max_iter = 500;
 
         % MPC solver 
         solver
@@ -59,7 +66,7 @@ classdef MPC_swing_up < handle
             % Initialize properties and setup MPC parameters
 
             if norm == 1
-                obj.norm = @(u) R*abs(u);
+                obj.norm = @(u) obj.Rw*abs(u);
             elseif norm == 2 
                 obj.norm = @(u) u'*obj.Rw*u;
             end
@@ -125,8 +132,8 @@ classdef MPC_swing_up < handle
             for k = 1:obj.N
                 st = X(:,k);  con = U(:,k);
                 cost = cost+...
-                (obj.Ow*st-P(obj.n_states+1:end))'*obj.Qw*(obj.Ow*st-P(obj.n_states+1:end))...
-                + obj.norm(con); % calculate obj
+                st'*obj.Qw*st*obj.dt*obj.gamma1...
+                + obj.norm(con)*obj.dt*obj.gamma2; % calculate obj
                 st_next = X(:,k+1);
                 
                
@@ -135,6 +142,9 @@ classdef MPC_swing_up < handle
     
                 con_vctr = [con_vctr;st_next-st_next_RK4]; % compute constraints % new
             end
+
+            cost = cost + (obj.Ow*st-P(obj.n_states+1:end))'*...
+                obj.Qwobs*(obj.Ow*st-P(obj.n_states+1:end));
             % make the decision variable one column  vector
             OPT_variables = [reshape(X,obj.n_states*(obj.N+1),1);
                 reshape(U,obj.n_controls*obj.N,1)];
@@ -145,7 +155,9 @@ classdef MPC_swing_up < handle
 
             opts = struct;
             opts.ipopt.max_iter = obj.max_iter;
-            opts.ipopt.print_level =0;%0,3
+            opts.ipopt.acceptable_tol =1e-8;
+            opts.ipopt.acceptable_obj_change_tol = 1e-6;
+            opts.ipopt.print_level =3;%0,3
             opts.print_time = 0;
 
             obj.solver = casadi.nlpsol('solver', 'ipopt', nlp_prob,opts);
@@ -159,6 +171,12 @@ classdef MPC_swing_up < handle
             % state constraints
             obj.args.lbx(1:obj.n_states*(obj.N+1), 1) = -inf;  
             obj.args.ubx(1:obj.n_states*(obj.N+1), 1) = inf;
+            
+            obj.args.lbx(1:obj.n_states:obj.n_states*(obj.N+1), 1) = -pi;  
+            obj.args.ubx(1:obj.n_states:obj.n_states*(obj.N+1), 1) = pi;
+
+            
+
 
          
             % controll constraints 
