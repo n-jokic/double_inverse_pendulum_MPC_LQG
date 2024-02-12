@@ -1,8 +1,13 @@
-function x_next = rk4_integration(x, u, dt)
-    k1 = dt * inverted_pendulum(x, u);
-    k2 = dt * inverted_pendulum(x + k1/2, u);
-    k3 = dt * inverted_pendulum(x + k2/2, u);
-    k4 = dt * inverted_pendulum(x + k3, u);
+function x_next = rk4_integration(x, u, system_dynamics, dt, M)
+    x_next = x;
+    time_step = dt/M;
 
-    x_next = x + (k1 + 2*k2 + 2*k3 + k4)/6;
+    for i = 1:M
+        k1 = time_step * system_dynamics(x_next, u);
+        k2 = time_step * system_dynamics(x_next + k1/2, u);
+        k3 = time_step * system_dynamics(x_next + k2/2, u);
+        k4 = time_step * system_dynamics(x_next + k3, u);
+
+        x_next = x_next + (k1 + 2*k2 + 2*k3 + k4)/6;
+    end
 end
