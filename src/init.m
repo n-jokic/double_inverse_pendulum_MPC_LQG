@@ -1,10 +1,10 @@
 clear; close all; clc;
-
+rng default
 %% Casadi setup:
-home_directory = string(java.lang.System.getProperty("user.home"));
-casadi_folder = 'casadi-3.6.4-windows64-matlab2018b';
-casad_path = fullfile(home_directory, casadi_folder);
-addpath(casad_path);
+% home_directory = string(java.lang.System.getProperty("user.home"));
+% casadi_folder = 'casadi-3.6.4-windows64-matlab2018b';
+% casad_path = fullfile(home_directory, casadi_folder);
+% addpath(casad_path);
 %% Model params:
 Le1 = 227/1000; % Lenght of the horizontal arm [m]
 J0 = 86.98/1000; % Moment of inertia at the base joint of the horizontal arm and pendulum [kg*m^2]
@@ -34,3 +34,12 @@ x0 = [0;0;0;0;0];
 
 % Initial control
 u0 = 0;
+%%
+% disp('Energy control');
+% run('energy_control_controller.m');
+
+disp('Exponential Pendium control');
+run('exp_pendium_controler.m');
+
+% disp('Energy shaping control');
+% run('energy_shaping_controller.m');
