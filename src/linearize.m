@@ -17,7 +17,6 @@ function [A, B, C, D] = linearize(system_dynamics, measurement_model, ...
     end
     y = measurement_model(x);
     
-    display(x);
     f  = system_dynamics(x, u);
    
 
