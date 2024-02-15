@@ -3,18 +3,29 @@ function K = make_lqr(system_dynamics, ...
     u_linearization_point)
 
 
-[A, B, ~, ~] = linearize(system_dynamics, ...
+[A, B, C, D] = linearize(system_dynamics, ...
     measurement_model, x_linearization_point, u_linearization_point);
 
-Q = [1/pi 0 0 0 0;
-     0 1/5 0 0 0;
-     0 0 1/pi 0 0;
-     0 0 0 1/5 0;
-     0 0 0 0 1/4
+continious_system = ss(A,B,C,D);
+%discrete_system = c2d(continious_system, dt);
+
+
+Q = [(1/0.1/pi)^2 0 0 0 0;
+     0 0 0 0 0;
+     0 0 (1/0.1/pi)^2 0 0;
+     0 0 0 0 0;
+     0 0 0 0 0
      ];
 
-R = 10/5;
+N = [1;
+    0;
+    1;
+    0;
+    0];
 
-K = lqr(A,B,Q,R);
+R = 1/(0.1)^2;
+
+K = lqr(A, B,Q,R, N);
+
 end
 

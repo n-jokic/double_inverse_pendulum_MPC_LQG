@@ -16,13 +16,13 @@ states_measured(1, :) = x0;
 for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
-    control(i, :) = controller(states_measured(i, :)', state_reference(i, :)') ...
-    + disturbance(i, :) + control_reference(i, :);
+    control(i, :) = controller(states_measured(i, :)', ...
+        state_reference(i, :)') + control_reference(i, :);
 
     control(i, :) = max(min(control(i, :), u_limit(2)), u_limit(1));
 
-    states(i+1, :) = rk4_integration(states(i, :)', control(i, :), ...
-                                system_dynamics, dt, M);
+    states(i+1, :) = rk4_integration(states(i, :)'+disturbance(i, :)', ...
+        control(i, :), system_dynamics, dt, M);
 end
 
 end
