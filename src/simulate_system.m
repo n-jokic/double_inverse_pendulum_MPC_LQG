@@ -1,5 +1,5 @@
 function [x, u] = simulate_system(system_dynamics, controller, x0, u0, ...
-    disturbance, sigma_noise,t, M)
+    state_reference, control_reference, disturbance, sigma_noise,t, M)
 u = zeros(length(t), length(u0));
 x = zeros(length(t)+1, length(x0));
 dt = t(2) - t(1);
@@ -11,7 +11,8 @@ x(1, :) = x0;
 
 for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
-    u(i, :) = controller(x(i, :)'+noise_sample) + disturbance(i, :);
+    u(i, :) = controller(x(i, :)'+noise_sample, state_reference(i, :)') ...
+    + disturbance(i, :) + control_reference(i, :);
     x(i+1, :) = rk4_integration(x(i, :)', u(i, :), ...
                                 system_dynamics, dt, M);
 end
