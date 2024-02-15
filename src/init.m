@@ -25,7 +25,7 @@ save('parameters', 'Le1', 'J0', 'Ka1', 'm2', 'Lcm2', 'J2', 'Ka2',...
 u_min = -5;
 u_max = 5;
 %% Simulation params:
-dt = 0.01;  % Sampling time [s]
+dt = 0.001;  % Sampling time [s]
 t_end = 10;  % Simuation duration [s]
 time = 0:dt:t_end;  % time axis [s]
 
@@ -38,8 +38,8 @@ u0 = 0;
 % disp('Energy control');
 % run('energy_control_controller.m');
 
-disp('Exponential Pendium control');
-run('exp_pendium_controler.m');
+%disp('Exponential Pendium control');
+%run('exp_pendium_controler.m');
 
 % disp('Energy shaping control');
 % run('energy_shaping_controller.m');
