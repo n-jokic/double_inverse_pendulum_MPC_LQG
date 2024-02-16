@@ -11,7 +11,7 @@ disturbance = zeros(length(t), length(x0));
 disturbance(t==2.5, 3) = 15/180*pi;
 disturbance(t==3, 3) = -15/180*pi;
 
-noise = [0.001/5, 0.005, 0.001/5, 0.005, 0.001];
+noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2];
 
 
 %% MPC_L1 + gain_scheduling

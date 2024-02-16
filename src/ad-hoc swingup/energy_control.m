@@ -1,4 +1,4 @@
-function u = energy_control(x)
+function u = energy_control(x, r)
     % u = sat[kv(E-E0)]sign(beta_dot*cos(beta))
     
     load parameters.mat J0 J2 Lcm2 Le1 m2 g 
@@ -27,14 +27,6 @@ function u = energy_control(x)
     
     E = Ek1 + Ep1 + Ek2 + Ep2;
     u = kv*(E-E0);
-    
-    if u > umax
-        u = umax;
-    else
-        if u < umin
-            u = umin;
-        end
-    end
     
     u = u * sign(x(4)*cos(x(3)));       
     
