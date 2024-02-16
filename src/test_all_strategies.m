@@ -8,8 +8,8 @@ M = 2;
 reference_cutoff_angle = 5/180*pi; %angle when reference gets set to 0
 
 disturbance = zeros(length(t), length(x0));
-disturbance(t==2.5, 3) = 20/180*pi;
-disturbance(t==3, 3) = -20/180*pi;
+disturbance(t==2.5, 3) = 15/180*pi;
+disturbance(t==3, 3) = -15/180*pi;
 
 noise = [0.001/5, 0.005, 0.001/5, 0.005, 0.001];
 

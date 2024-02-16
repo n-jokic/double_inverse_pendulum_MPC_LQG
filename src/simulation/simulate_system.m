@@ -14,14 +14,17 @@ control(1, :) = u0;
 states(1, :) = x0;
 states_measured(1, :) = x0;
 
+reached_cutoff = 0;
+
 for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
 
     if abs(states_measured(i, 3)) < reference_cutoff_angle
-        control_reference(i, :) = 0*control_reference(i, :);
-        state_reference(i, :) = 0*state_reference(i, :);
+        reached_cutoff = 1;
     end
+    control_reference(i, :) = (1-reached_cutoff)*control_reference(i, :);
+    state_reference(i, :) = (1-reached_cutoff)*state_reference(i, :);
 
     control(i, :) = controller(states_measured(i, :)', ...
         state_reference(i, :)') + control_reference(i, :);
