@@ -35,7 +35,7 @@ classdef MPC_swing_up < handle
         % NLP setup
         max_iter = 2000;
         acceptable_tol = 5e-3;
-        acceptable_obj_change_tol = 1e-5;
+        acceptable_obj_change_tol = 1e-4;
         % MPC solver 
         solver
 

@@ -1,10 +1,35 @@
 clear; close all; clc;
 rng default
 %% Casadi setup:
-% home_directory = string(java.lang.System.getProperty("user.home"));
-% casadi_folder = 'casadi-3.6.4-windows64-matlab2018b';
-% casad_path = fullfile(home_directory, casadi_folder);
-% addpath(casad_path);
+home_directory = string(java.lang.System.getProperty("user.home"));
+casadi_folder = 'casadi-3.6.4-windows64-matlab2018b';
+casad_path = fullfile(home_directory, casadi_folder);
+addpath(casad_path);
+
+%% SAVE FLAG
+SAVE_PARAM = 0;
+SAVE_PLOTS = 0;
+SAVE_TRAJECTORY = 0;
+
+%% Adding folders to path:
+folder_path = fullfile(cd, 'ad-hoc swingup');
+addpath(folder_path);
+
+folder_path = fullfile(cd, 'linearization');
+addpath(folder_path);
+
+folder_path = fullfile(cd, 'LQR');
+addpath(folder_path);
+
+folder_path = fullfile(cd, 'model');
+addpath(folder_path);
+
+folder_path = fullfile(cd, 'MPC swingup');
+addpath(folder_path);
+
+folder_path = fullfile(cd, 'simulation');
+addpath(folder_path);
+
 %% Model params:
 Le1 = 227/1000; % Lenght of the horizontal arm [m]
 J0 = 86.98/1000; % Moment of inertia at the base joint of the horizontal arm and pendulum [kg*m^2]
@@ -19,8 +44,10 @@ Kt = 0.696; % Counter-electromotive force term, coupling the angular speed and c
 Kf = 3.377; % Torque produced by the motor per current unit [V*s]
 g = 9.81; % [m/s^2]
 
-save('parameters', 'Le1', 'J0', 'Ka1', 'm2', 'Lcm2', 'J2', 'Ka2',...
+if SAVE_PARAM
+    save('parameters', 'Le1', 'J0', 'Ka1', 'm2', 'Lcm2', 'J2', 'Ka2',...
     'Lb', 'R', 'Kt', 'Kf', 'g');
+end
 
 u_min = -5;
 u_max = 5;
@@ -34,12 +61,3 @@ x0 = [0;0;0;0;0];
 
 % Initial control
 u0 = 0;
-%%
-% disp('Energy control');
-% run('energy_control_controller.m');
-
-%disp('Exponential Pendium control');
-%run('exp_pendium_controler.m');
-
-% disp('Energy shaping control');
-% run('energy_shaping_controller.m');

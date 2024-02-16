@@ -1,7 +1,8 @@
-function [states, control, states_measured] = simulate_system( ...
+function [states, control, states_measured, state_reference, ...
+    control_reference] = simulate_system( ...
     system_dynamics, controller, x0, u0, ...
     state_reference, control_reference, disturbance, ...
-    sigma_noise, t, M, u_limit)
+    sigma_noise, t, M, u_limit, reference_cutoff_angle)
 control = zeros(length(t), length(u0));
 states = zeros(length(t)+1, length(x0));
 states_measured = zeros(length(t)+1, length(x0));
@@ -16,6 +17,12 @@ states_measured(1, :) = x0;
 for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
+
+    if abs(states_measured(i, 3)) < reference_cutoff_angle
+        control_reference(i, :) = 0*control_reference(i, :);
+        state_reference(i, :) = 0*state_reference(i, :);
+    end
+
     control(i, :) = controller(states_measured(i, :)', ...
         state_reference(i, :)') + control_reference(i, :);
 

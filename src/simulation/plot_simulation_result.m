@@ -1,6 +1,6 @@
 function plot_simulation_result(states, ...
     states_measured, control, state_reference, control_reference, ...
-    disturbance, t, t1, t2, u_limit)
+    t, t1, t2, u_limit)
 
 radian_to_degrees= 1/pi*180;
 k = 1;
@@ -16,7 +16,7 @@ control = control(idx_t1:idx_t2, :);
 state_reference = state_reference(idx_t1:idx_t2, :);
 control_reference = control_reference(idx_t1:idx_t2, :);
 
-figure(1);
+figure();
 subplot(5, 1, k);
 hold on;
 plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
@@ -84,7 +84,7 @@ legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
 
 
-figure(2);
+figure();
 hold on;
 stairs(t, control);
 stairs(t, control_reference);
