@@ -32,8 +32,8 @@ disturbance = zeros(length(t), length(x0));
 
 % Disturbance is impulse in nature
 % disturbance(t==2, 3) = 20/180*pi;
-disturbance(t==2.5) = 20/180*pi;
-disturbance(t==3.5) = 20/180*pi;
+disturbance(t==2.5, 3) = 20/180*pi;
+disturbance(t==3.5, 3) = -20/180*pi;
 
 noise = [0.01, 0.01*5, 0.01/10, 0.01*5, 0.01/10]/10;
 %% Simulation:
