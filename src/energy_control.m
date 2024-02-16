@@ -6,7 +6,7 @@ function u = energy_control(x)
     umax = 5;
     umin = -5;
     
-    kv = 1.8;
+    kv = 0.68;
     E0 = 0;
     
     l2 = Lcm2; % Distance from axis of rotation to centre of mass of the pendulum[m]

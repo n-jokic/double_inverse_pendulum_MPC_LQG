@@ -4,8 +4,8 @@ function u = energy_shaping(x)
     umin = -5;
     
     
-    k1 = 2/10; % k1 > 0
-    k2 = 10; % k2 > 0
+    k1 = 0.5; % k1 > 0 0.5
+    k2 = 0.9; % k2 > 0  0.9
     
     u = k1*x(2) + k2*cos(x(3))*x(4);
     

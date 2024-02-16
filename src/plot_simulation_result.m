@@ -1,16 +1,27 @@
 function plot_simulation_result(states, ...
     states_measured, control, state_reference, control_reference, ...
-    disturbance, t, u_limit)
+    disturbance, t, t1, t2, u_limit)
 
 radian_to_degrees= 1/pi*180;
 k = 1;
 
+idx_t1 = find(t >= t1, 1);
+idx_t2 = find(t <= t2, 1, 'last');
+
+% Prikazujemo samo podatke unutar odabranog vremenskog intervala
+t = t(idx_t1:idx_t2);
+states = states(idx_t1:idx_t2, :);
+states_measured = states_measured(idx_t1:idx_t2, :);
+control = control(idx_t1:idx_t2, :);
+state_reference = state_reference(idx_t1:idx_t2, :);
+control_reference = control_reference(idx_t1:idx_t2, :);
+
 figure(1);
 subplot(5, 1, k);
 hold on;
-plot(t, states_measured(1:end-1, k)*radian_to_degrees, '.', ...
+plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
     'MarkerSize', 2);
-plot(t, states(1:end-1, k)*radian_to_degrees);
+plot(t, states(1:end, k)*radian_to_degrees);
 plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\beta [deg]');
 xlabel('t [s]');
@@ -22,9 +33,9 @@ k = 2;
 
 subplot(5, 1, k);
 hold on;
-plot(t, states_measured(1:end-1, k)*radian_to_degrees, '.', ...
+plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
     'MarkerSize', 2);
-plot(t, states(1:end-1, k)*radian_to_degrees);
+plot(t, states(1:end, k)*radian_to_degrees);
 plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\beta} [deg/s]');
 xlabel('t [s]');
@@ -36,9 +47,9 @@ k = 3;
 
 subplot(5, 1, k);
 hold on;
-plot(t, states_measured(1:end-1, k)*radian_to_degrees, '.', ...
+plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
     'MarkerSize', 2);
-plot(t, states(1:end-1, k)*radian_to_degrees);
+plot(t, states(1:end, k)*radian_to_degrees);
 plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\alpha [deg]');
 xlabel('t [s]');
@@ -49,9 +60,9 @@ legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
 k = 4;
 subplot(5, 1, k);
 hold on;
-plot(t, states_measured(1:end-1, k)*radian_to_degrees, '.', ...
+plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
     'MarkerSize', 2);
-plot(t, states(1:end-1, k)*radian_to_degrees);
+plot(t, states(1:end, k)*radian_to_degrees);
 plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\alpha} [deg/s]');
 xlabel('t [s]');
@@ -62,9 +73,9 @@ legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
 k = 5;
 subplot(5, 1, k);
 hold on;
-plot(t, states_measured(1:end-1, k), '.', ...
+plot(t, states_measured(1:end, k), '.', ...
     'MarkerSize', 2);
-plot(t, states(1:end-1, k));
+plot(t, states(1:end, k));
 plot(t, state_reference(1:end, k), 'k--');
 ylabel('i [A]');
 xlabel('t [s]');
