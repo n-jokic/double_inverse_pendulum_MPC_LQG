@@ -1,0 +1,19 @@
+\babel@toc {serbian}{}\relax 
+\contentsline {section}{\numberline {1}Modeliranje sistema i analiza modela}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Uvod}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Modeliranje sistema}{3}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Matlab model}{3}{}%
+\contentsline {subsection}{\numberline {1.3}Ponašanje sistema u otvorenoj sprezi}{4}{}%
+\contentsline {subsection}{\numberline {1.4}Linearizacija sistema}{5}{}%
+\contentsline {subsection}{\numberline {1.5}Poremećaji u sistemu}{6}{}%
+\contentsline {subsection}{\numberline {1.6}Upravljački signali i skaliranje signala}{7}{}%
+\contentsline {section}{\numberline {2}Projektovanje sistema upravljanja}{8}{}%
+\contentsline {subsection}{\numberline {2.1}Generisanje trajektorije}{9}{}%
+\contentsline {subsection}{\numberline {2.2}Projektovanje kontrolera}{10}{}%
+\contentsline {section}{\numberline {3}Komparativna analiza projektovanih sistema upravljanja}{11}{}%
+\contentsline {subsection}{\numberline {3.1}Poređenje odziva sistema}{11}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Stabilizacija u gornjem položaju}{11}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Robustnost na greške u modelovanju}{11}{}%
+\contentsline {subsubsection}{\numberline {3.1.3}Uticaj šuma}{11}{}%
+\contentsline {subsection}{\numberline {3.2}Potiskivanje poremećaja}{11}{}%
+\contentsline {section}{\numberline {4}Zaklju"cak}{11}{}%
