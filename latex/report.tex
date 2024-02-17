@@ -137,7 +137,7 @@
 		\vfill 
 		\emph{Studenti:}\\
 		Nikita Jokić 3279/2023\\[0.1cm]
-		Ivona Dučić ----/----\\[1.5cm]		
+		Ivona Dučić 3067/2023\\[1.5cm]		
 		\emph{Mentor:}\\
 		doc. dr Aleksandra Krstić\\[0.1cm]									
 		{\large Februar 2024}\\[2cm]
@@ -148,14 +148,87 @@
 	\section{Modeliranje sistema i analiza modela}
 	\subsection{Uvod} 
 	
+	Furuta penduluma (FP) je rotaciono klatno koje se pokreće motorom jednosmerne struje. U ovom radu razmatrane su kontrolne strategije za nelinearni problem uspravljanja i balansiranja FP u njegovom nestabilnom, uspravnom ravnotežnom položaju. Iako ovo može delovati kao akademski problem, FP je ilustrativan za širok spektar dinamičkih sistema sa stvarnim primenama. Fokusiranje na ovu problematiku integrisano je u aktuelna istraživanja u oblasti sajber-fizičkih sistema (CPSs)\footnote{Sajber-fizički sistemi (CPSs) predstavljaju integraciju računarskih elemenata sa fizičkim sistemima, stvarajući tako dinamičko i uzajamno povezano okruženje.} \cite{inicijalna}. \\ 
 	
+	Fizičari su uspešni u modelovanju fenomena u prirodi u iznenađujućem broju redova veličina. Iako se u većini slučajeva može samo težiti posmatranju, u malom, ali važnom podskupu, moguće je aktivno modifikovati ponašanje sistema. Ovo se postiže uključivanjem računarskih komponenti koje interaguju sa fizičkim sistemom, što čini osnovu istraživanja u oblasti sajber-fizičkih sistema. Teorija upravljanja se bavi izazovima u postizanju željenih performansi sistema, uključujući nestabilnost u otvorenoj sprezi, ograničenja u broju promenljivih koje se mogu aktivirati i ograničene informacije o stanju sistema.\\
+	
+	Ovaj rad proučava sisteme koji se mogu modelovati konačnim brojem povezanih diferencijalnih jednačina prvog reda, kako linearne sisteme tako i nelinearne sistema, koji su prisutni u sve većem broju modernih aplikacija. \\
+	
+	Furuta pendulum, kao jednostavan primer nelinearnog sistema, služi kao osnovno sredstvo za istraživanje ideja u oblasti nelinearnog upravljanja. Takođe predstavlja prototip za praktično važne uređaje poput robotskih ruku cilindričnog oblika, rotacionih dizalica ili transportnih sistema za visoke objekte. Kontrolni problemi usmeravanja i balansiranja penduluma oko nestabilne ravnoteže su dobro proučeni.\\
+	
+	U rada \cite{inicijalna} se navodi da do trenutka kada je rad napisan, nelinearni problem uspravljanja FP nije rešavan optimalnom kontrolom. Korišćenjem optimalne kontrole, problem se elegantno formuliše kao minimizacija odgovarajućeg troška uz poštovanje određenih ograničenja. Primenom ove tehnike, autor istražuje savremene tehnike kontrole, njihovu primenljivost u sličnim problemima i razvija odgovarajuću kontrolnu tehniku za ovu klasu uređaja. Pored optimalne kontrole uspravljanja FP razmatrane su i ad hoc strategije koje se oslanjaju na zakone upravljanja izvedene iz analize sistema. Balansiranje klatna oko njegovog nestabilnog ravnotežnog stanja se obavlja korišćenjem LQG. 
+	
+	(uvod doraditi na kraju, navesti strukturu izvestaja...)
 	
 	
 	\newpage
 	
 	\subsection{Modeliranje sistema} 
 	
+	Furuta pendulum je dinamički sistem koji se sastoji od dve osnovne komponente: \\
 	
+	Horizontalna ruka : Ovo je čvrsta šipka ili krak koji je postavljen horizontalno. Na jednom kraju može biti pričvršće za oslonac, dok je drugi kraj često povezan sa vertikalnim delom sistema, poznatim kao pendulum. Horizontalna ruka služi kao platforma za postavljanje i rotiranje vertikalnog penduluma. \\
+	
+	- Vertikalni pendulum: Ovaj deo predstavlja masu (obično šipka ili krak) koje je povezano sa horizontalnom rukom na jednom kraju, a drugi kraj se slobodno kreće. Rotacija penduluma oko vertikalne ose može se kontrolisati pomoću motora koji je integrisan u sistem. Ovaj motor omogućava sistemu da realizuje oscilatorne pokrete.
+	
+	(DODAT SLIKU) i šta je štaa, da li definisati sve od konstanti što se pojavljuje u jednačinama
+	\\
+	
+	Nelinearni model FP izveden je iz Langranžove mehanike. Energija sistema koji se sastoji od N krutih tela može se napisati kao zbir kinetičke energije $\tau$ i potencijalne energije $\nu$ \cite{inicijalna}. 
+	\begin{equation}
+		\tau = \sum_{i=1}^{N} \left( \frac{1}{2} M_i |v_i|^2 + \frac{1}{2} \omega_i I_i \omega_i^T \right)
+	\end{equation}
+	
+	\begin{equation}
+		\nu = \sum_{i=1}^{N} M_i \cdot (-g)
+	\end{equation}
+	
+	
+	
+	Gde za svako kruto telo $i$, $M_i$ je masa tela, $v_i$ je brzina centra mase, $I_i$ matrica inercije, $\omega_i$ ugaona brzina, $r_i$ pozicija od centra mase, i $g$ je gravitaciono ubrzanje.\\
+	
+	Langranžijan se računa kao :
+	
+	\begin{equation}
+		\mathcal{L} = \tau - \nu, 
+	\end{equation}
+	
+	dok se jednačine kretanja računaju preko Ojler-Langranžovih jednačina: 
+	\begin{equation}
+		\frac{d}{dt} \left(\frac{\partial \mathcal{L}}{\partial \dot\alpha}\right) - \frac{\partial \mathcal{L}}{\partial \alpha} = -K_{a_1} \dot\alpha + K_f i, \quad 
+	\end{equation}
+	
+	\begin{equation}
+		\frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot\beta} \right) - \frac{\partial \mathcal{L}}{\partial \beta} = -K_{a_2} \dot\beta
+	\end{equation}
+	
+	Karakteristika motora data je jednačinom: 
+	\begin{equation}
+		\frac{d}{dt} \left( L_b \frac{di}{dt} \right) + K_t \frac{d\alpha}{dt} + R i = u
+	\end{equation}
+	
+	Kako bi se konstruisao nelinearni model sistema u prostoru stanja: 
+	\begin{equation}
+		\dot x = f(x, u)
+	\end{equation}
+	promenljive se definišu kao: $x_1$ = $\alpha$, $x_2$ = $\dot\alpha$,  $x_3$ = $\beta$, $x_4$ = $\dot\beta$, $x_5$ = $i$. \\
+	
+	
+	Konačno model u prostoru stanja glasi:
+	
+	\begin{equation}
+		\begin{aligned}
+			\dot{x}_1 &= x_2; \\[0.8em]
+			\dot{x}_2 &= -\frac{J_2(K_{a1}x_2 - K_fx_5 + x_4(L_{cm2}L_{e1}m_2x_4 + 2J_2x_2\cos(x_3))\sin(x_3))}{-L_{cm2}^2L_{e1}^2m_2^2\cos(x_3)^2 + J_2(J_0 + J_2\sin(x_3)^2)} \\[0.8em]
+			&\quad + \frac{L_{cm2}L_{e1}m_2\cos(x_3)(-K_{a2}x_4 + (gL_{cm2}m_2 + J_2x_2^2\cos(x_3))\sin(x_3))}{-L_{cm2}^2L_{e1}^2m_2^2\cos(x_3)^2 + J_2(J_0 + J_2\sin(x_3)^2)}; \\[0.8em]
+			\dot{x}_3 &= x_4; \\[0.5em]
+			\dot{x}_4 &= \frac{K_{a2}x_4 - gL_{cm2}m_2\sin(x_3)(J_0 + J_2\sin(x_3)^2)}{L_{cm2}^2L_{e1}^2m_2^2\cos(x_3)^2 - J_2(J_0 + J_2\sin(x_3)^2)} \\[0.8em]
+			&\quad + \frac{\cos(x_3)(-J_0J_2x_2^2 + L_{cm2}^2L_{e1}^2m_2^2x_4^2)\sin(x_3)}{L_{cm2}^2L_{e1}^2m_2^2\cos(x_3)^2 - J_2(J_0 + J_2\sin(x_3)^2)} \\[0.8em]
+			&\quad - \frac{J_2^2x_2^2\sin(x_3)^3 + L_{cm2}L_{e1}m_2(K_{a1}x_2 - K_fx_5 + J_2x_2x_4\sin(2x_3))}{L_{cm2}^2L_{e1}^2m_2^2\cos(x_3)^2 - J_2(J_0 + J_2\sin(x_3)^2)};\\[0.5em]
+			\dot{x}_5 &= -\frac{K_tx_2 - Rx_5 + u}{L_b}.
+		\end{aligned}
+		\label{eq:nonModel}
+	\end{equation}
 	
 	
 	\subsubsection{Matlab model}
@@ -175,6 +248,62 @@
 	\clearpage 
 	\subsection{Linearizacija sistema}
 	
+	Nelinearni model (\ref{eq:nonModel}) se može linearizovati razvijanjem u Tejlorov red u okoline tačke $(\bar{x}, \bar{u})$:
+	\begin{equation}
+		\mathbf{f}(\mathbf{x}, u) \approx \mathbf{f}(\mathbf{\bar{x}}, \bar{u}) + \nabla_x \mathbf{f}|_{(\bar{x},\bar{u})} (\mathbf{x} - \mathbf{\bar{x}}) + \frac{\partial \mathbf{f}}{\partial u}|_{(\mathbf{\bar{x}},\bar{u})} (u - \bar{u}). \label{eq:linearization}
+	\end{equation}
+	
+	Neka su $A = \nabla_{\mathbf{x}} \mathbf{f}|_{(\bar{\mathbf{x}},\bar{u})}$, $B = \frac{\partial \mathbf{f}}{\partial u}|_{(\bar{\mathbf{x}},\bar{u})}$, $\Delta \mathbf{x} = \mathbf{x} - \bar{\mathbf{x}}$, i $\Delta u = u - \bar{u}$.
+	Prethodna jednačina se može napisati kao:
+	\begin{equation}
+		\dot{\mathbf{x}} \approx A\Delta \mathbf{x} + B\Delta u + f(\bar{\mathbf{x}}, \bar{u}). \label{eq:linearized_system}
+	\end{equation}
+	
+	Linearizacija se obavlja za različite $\bar{\mathbf{x}}$ čime se dolazi do porodice linearnih modela. Linearni model u okolini tačke  $f(\bar{x} = 0, u = 0) = 0$, može se napisati kao:
+	\begin{align}
+		\dot{x}(t) &= Ax(t) + Bu(t) \\
+		y(t) &= Cx(t) + Du(t)
+	\end{align}
+	
+	
+	gde  $x$, $u$, i $y$ označavaju odstupanje od ravnotežnog stanja
+	\[
+	\mathbf{A} =
+	\begin{bmatrix}
+		0 & 1.0000 & 0 & 0 & 0 \\
+		0 & -0.0174 & 20.7861 & -0.0023 & 57.5344 \\
+		0 & 0 & 0 & 1.0000 & 0 \\
+		0 & -0.0174 & 63.8319 & -0.0071 & 57.4388 \\
+		0 & -232.0252 & 0 & 0 & -755.4250
+	\end{bmatrix}
+	\]
+	
+	\[
+	\mathbf{B} =
+	\begin{bmatrix}
+		0 \\
+		0 \\
+		0 \\
+		0 \\
+		333.3367
+	\end{bmatrix}
+	\]
+	
+	\[
+	\mathbf{C} =
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 1 & 0 & 0
+	\end{bmatrix}
+	\]
+	
+	\[
+	\mathbf{D} =
+	\begin{bmatrix}
+		0 \\
+		0
+	\end{bmatrix}
+	\]
 	
 	
 	\clearpage
@@ -199,6 +328,27 @@
 	\newpage
 	\subsection{Generisanje trajektorije}
 	
+	Ovo poglavlje istražuje kako pronaći optimalan ulaz za dinamički sistem, omogućavajući mu da sledi željenu putanju u prostoru stanja. Ova putanja treba da bude u skladu sa zadanim ograničenjima...
+	
+	\subsubsection{Ad hoc strategije}
+	
+	opis svake.. 
+	Energy control: \\
+	
+	\begin{equation}
+		u = \text{\textit{sat}}\left[k_v (E - E_0)\right] \text{\textit{sign}}( \dot{\beta} \cos \beta)
+	\end{equation}
+	
+	Exponentiation of the pendulum position:
+	\begin{equation}
+		u = \text{\textit{sat}}(k_v |\beta^n|) \text{\textit{sign}}( \dot{\beta} \cos \beta)
+	\end{equation}
+	
+	Energy shaping: 
+	
+	\begin{equation}
+		u = k_1 (x_2 + k_2 \cos(x_3) x_4)	
+	\end{equation}
 	
 	\newpage
 	\subsection{Projektovanje kontrolera}
@@ -245,11 +395,8 @@
 	
 	\begin{thebibliography}{9}
 		\bibitem{inicijalna}
-		\emph{Robust Stable Nonlinear Control
-			and Design of a CSTR in a Large
-			Operating Range
-		}, Johannes Gerhard, Martin M¨onnigmann,
-		Wolfgang Marquardt
+		\emph{Nonlinear control of an inverted pendulum}, António Samuel Ávila Balula, Thesis to obtain the Master of Science Degree in
+		Engineering Physics 2016.
 		\bibitem{}\emph{Nonlinear pH Control in a CSTR
 		} RaynxId A. Wright al Costas Kravais
 		\bibitem{beleske}
