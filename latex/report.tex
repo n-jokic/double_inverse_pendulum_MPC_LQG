@@ -167,7 +167,7 @@
 	
 	Furuta pendulum je dinamički sistem koji se sastoji od dve osnovne komponente: \\
 	
-	Horizontalna ruka : Ovo je čvrsta šipka ili krak koji je postavljen horizontalno. Na jednom kraju može biti pričvršće za oslonac, dok je drugi kraj često povezan sa vertikalnim delom sistema, poznatim kao pendulum. Horizontalna ruka služi kao platforma za postavljanje i rotiranje vertikalnog penduluma. \\
+	Horizontalna ruka : Ovo je čvrsta šipka ili krak koji je postavljen horizontalno. Na jednom kraju može biti pričvršćen za oslonac, dok je drugi kraj često povezan sa vertikalnim delom sistema, poznatim kao pendulum. Horizontalna ruka služi kao platforma za postavljanje i rotiranje vertikalnog penduluma. \\
 	
 	- Vertikalni pendulum: Ovaj deo predstavlja masu (obično šipka ili krak) koje je povezano sa horizontalnom rukom na jednom kraju, a drugi kraj se slobodno kreće. Rotacija penduluma oko vertikalne ose može se kontrolisati pomoću motora koji je integrisan u sistem. Ovaj motor omogućava sistemu da realizuje oscilatorne pokrete.
 	
@@ -247,6 +247,7 @@
 	
 	\clearpage 
 	\subsection{Linearizacija sistema}
+	\label{sec:linearizacija}
 	
 	Nelinearni model (\ref{eq:nonModel}) se može linearizovati razvijanjem u Tejlorov red u okoline tačke $(\bar{x}, \bar{u})$:
 	\begin{equation}
@@ -328,31 +329,81 @@
 	\newpage
 	\subsection{Generisanje trajektorije}
 	
-	Ovo poglavlje istražuje kako pronaći optimalan ulaz za dinamički sistem, omogućavajući mu da sledi željenu putanju u prostoru stanja. Ova putanja treba da bude u skladu sa zadanim ograničenjima...
+	Ovo poglavlje istražuje kako pronaći optimalan ulaz za dinamički sistem, omogućavajući mu da sledi željenu putanju u prostoru stanja. Ova putanja treba da bude u skladu sa zadanim ograničenjima i optimizuje zadatu veličinu. Iako se različite strategije mogu koristiti za projektovanje putanja, fokus je stavljen na optimalno upravljanje. Ova tehnika pruža jasan okvir za pronalaženje rešenja za probleme podložne ograničenjima i ciljevima optimizacije.
 	
 	\subsubsection{Ad hoc strategije}
-	
-	opis svake.. 
-	Energy control: \\
+	\label{sec:andhoc}
+	U \cite{energy_c} predložen je zakon upravljanja za uspravljanje klatna zasnovanoj na kontroli energije (engl: Energy control): \\
 	
 	\begin{equation}
-		u = \text{\textit{sat}}\left[k_v (E - E_0)\right] \text{\textit{sign}}( \dot{\beta} \cos \beta)
-	\end{equation}
+		u = \text{\textit{sat}}\left[k_v (E - E_0)\right] \text{\textit{sign}}( \dot{\beta} \cos \beta), 
+		\label{eq:en_control}
+	\end{equation} \\
 	
-	Exponentiation of the pendulum position:
+	
+	gde su $\textit{E}$ trenutna energija sistema, 
+	$\textit{E}_0$ je željena energija sistema, $\textit{k}_v$ je pojačanje kontrolera, a $\beta$ je ugao penduluma. Prvi pojam definiše amplitudu ulaza. Može se posmatrati kao proporcionalni kontroler, gde je promenljiva razlika u energiji između trenutnog stanja i energije ciljnog stanja, koja je konvencionalno postavljena na nulu. Amplituda je ograničena zbog fizičkih ograničenja aktuatora. Drugi pojam definiše znak upravljačkog ulaza i obezbeđuje da je efekat ulaza dodavanje energije sistemu. Član $\cos \beta$ procenjuje da li je trenutni položaj penduluma iznad ili ispod horizontalnog položaja. Za $\cos \beta = 0$, pendulum je horizontalan, stoga sistem nije kontrolabilan - nema prenosa energije na pendulum. Sa dodatnim članom $\dot{\beta}$, sila se primenjuje protiv smera kretanja penduluma kada je ispod horizontalnog položaja i u istom smeru kada je iznad.\\
+	
+	Važno je napomenuti da je ovaj zakon upravljanja projektovan specifično za sistem FP, stoga nije vrlo opšte primenljiv. Takođe, ograničen je na situacije gde nivo energije ciljnog stanja nije degenerisan. Iako će kontroler dovesti sistem do stanja sa određenom energijom, ako postoji više konfiguracija sa istom energijom, nije moguće izabrati između njih. Ovo je slučaj kod FP, gde energija sistema ne zavisi od ugla horizontalne ruke $\alpha$. Dakle, ovom tehnikom nema kontrole nad ovom varijablom tokom uspravljanja. \\
+	
+	Zakon upravljanja definisan u jednačini (\ref{eq:en_control}) zahteva izračunavanje energije sistema. Modifikovana verzija kontrolera predložena je u \cite{energy_c} koja uzima u obzir samo varijable prostora stanja. Ovaj zakon upravljanja poznate je kao 
+	Exponentiation of the pendulum position i glasi:
+	
 	\begin{equation}
 		u = \text{\textit{sat}}(k_v |\beta^n|) \text{\textit{sign}}( \dot{\beta} \cos \beta)
-	\end{equation}
+	\end{equation} \\
+	U ovom slučaju, prvi član je modifikovan, sada uzimajući ugao između trenutnog položaja i vertikale.
+	Dodaje se eksponent \textit{n} izražen u izrazu, što povećava amplitudu ulaza kada je pendulum daleko od uspravnog položaja, ali je manja kada je bliže. U \cite{inicijalna} navode da ovaj zakon omogućava glađi prelaz između nelinearnog upravljanja i upravljanja koji balansira klatno u gornjem položaju. Drugi član ostaje nepromenjen. \\
 	
-	Energy shaping: 
+	U \cite{ener_shaping} je izveden i testiran zakon upravljanja poznat kao energy shaping. Pomenuti zakon upravljanja je izveden na osnovu inevrznog klatna koji rotira samo oko vertikalne ose i glasi: \\
 	
 	\begin{equation}
-		u = k_1 (x_2 + k_2 \cos(x_3) x_4)	
+		u = k_1 (\dot\alpha + k_2 \cos(\beta) \dot\beta)	
 	\end{equation}
+	
+	\subsubsection{Optimalno upravljanje}
 	
 	\newpage
 	\subsection{Projektovanje kontrolera}
 	
+	Nakon generisanja referentnih trajektorije potrebno je projekotvati kontroler čiji je zadatak da u što većoj meri isprati željenu trajektoriju i kontroler koji će održavati sistem u željenom, gornjem položaja. \\
+	
+	Linearni kontroleri su validni samo u onom regionu gde je izvršena linearizacija sistema, a kako je zadatak upravlanje nelineranim sistemom potrebno je napraviti ansambl kontrolera. \\
+	
+	U radu \cite{inicijalna} su se bavili projektovanjem LQG kontrolera. Kalman filter je optimalan za procenu stanja u linearnim sistemima, ali kada se primeni na nelinearne sisteme, može doći do netačnih procena stanja zbog odstupanja između stvarne nelinearnosti sistema i linearnog modela koji se koristi u Kalman filtru. Iz ovog razloga, u ovom radu smo se zadržali na korišćenju LQR kontrolera. \\
+	
+	Cilj algoritma LQR je pronaći vektor pojačanja K za zakon povratne sprege u prostoru stanja
+	\begin{equation}
+		u = -Kx 
+	\end{equation}
+	
+	koji se primenjuje na kontinualni linearni sistem, definisan u \ref{sec:linearizacija},
+	
+	\begin{equation}
+		\begin{cases}
+			\dot{x}(t) = Ax(t) + Bu(t) \\
+			y(t) = Cx(t) + Du(t)
+		\end{cases}
+	\end{equation}
+	a minimizuje funkciju troška
+	\begin{equation}
+		J = \int_{0}^{\infty}  x^T Q_r x  + u^T R_r u
+	\end{equation}
+	
+	Matrice $Q_r$ i $R_r$ određuju relativni značaj koji se pridaje regulaciji stanja i trošku ulaza, i treba ih odabrati uzimajući u obzir ciljeve dizajna sistema.\\
+	
+	DODATI SLIKU, ref: wikipedija \\
+	
+	
+	Prelazak između kontrolera vrši se u dva različita režima rada: \\
+	
+	1. Kontrola za podizanje sistema primenjuje se direktno na uređaj. Samo linearni kontroler oko krajnje tačke je aktivan (globalni LQR kontroler). Tranziciji između režima uspravljanja sistema i režima ravnoteže oko uspravnog poožaja se dešava kada se ugao penduluma dovoljno približi nultom položaju ($\beta$ < 18$^\circ$). Ovaj pristup se koristi kada nema referentne putanje, i podizanje sistema se izvodi u zatvorenoj petlji, na primer sa Ad hoc strategijama opisanim u \ref{sec:andhoc}. \\
+	
+	2. Referentna kontrola se primenjuje na uređaj, koji zauzvrat ima zatvoreni skup linearnih kontrolera koji stabilizuju razliku između izvedene putanje i referentne putanje. Ovo se naziva Gain Scheduling controller.\\
+	
+	Gain Scheduling controller implementiran u upravljanju FP bira jedan od šest kontrolera koji se koristi u skladu sa trenutnim uglom $\beta$ (slika DODATI iz inicijalne). Važno je napomenuti da su oni raspoređeni simetrično: prvi član Tejlorovog reda je identičan za $\beta = \pm \theta$, pa je i inkrementalni model isti. 
+	
+	DODATI SLIKU I ZA SEMU iz inicijalne
 	
 	
 	\newpage
@@ -404,11 +455,14 @@
 		
 		
 		
-		\bibitem{model}
-		\emph{Dynamics of pH in Controlled Stirred Tank Reactor}, Thomas J. McAvoy,l Elmer HSU, and Stuart Lowenthal
-		\bibitem{}\emph{Hybrid simulation of a pH stirred
-			tank control system} Thomas J. McAvoy
-		
+		\bibitem{energy_c}
+		\emph{Swinging up the furuta pendulum and its stabi- ´
+			lization via model predictive control.}, P. Seman, B. Rohal’-Ilkiv, M. Juhas, and M. Salaj.  Journal of Electrical Engineering, 64(3):152–158, 2013. ISSN
+		13353632. doi: 10.2478/jee-2013-0022.
+		\bibitem{ener_shaping}\emph{A normal form for energy shaping: application to the furuta pendulum}
+		S. Nair and N. E. Leonard. 
+		In Decision and Control, 2002, Proceedings of the 41st IEEE Conference on, volume 1, pages
+		516–521. IEEE, 2002
 		
 	\end{thebibliography}
 \end{document}
