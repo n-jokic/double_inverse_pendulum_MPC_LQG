@@ -6,7 +6,7 @@ for i = 1:n
     figure = figures(i);
     set(figure, 'Renderer', 'Painters');
     
-    saveas(f,[PATH '\' names(i) '.eps'],'epsc');
-    
+    saveas(figure, join([PATH '\' names{i} '.eps'],"") ,'epsc');
+
 end
 

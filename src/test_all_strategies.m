@@ -28,8 +28,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -47,8 +47,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -67,8 +67,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -87,8 +87,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -107,8 +107,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -127,8 +127,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -147,8 +147,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 
@@ -167,8 +167,8 @@ test_controller(controller, ...
     t, t1, t2, u_limit);
 
 if SAVE_PLOTS
-    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-3)], ...
-        [fig2.Name "_" trajectory_file(1:end-3)]}, PATH)
+    save_plots([fig1, fig2], {[fig1.Name "_" trajectory_file(1:end-4)], ...
+        [fig2.Name "_" trajectory_file(1:end-4)]}, PATH)
 end
 
 

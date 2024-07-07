@@ -11,7 +11,7 @@ SAVE_PARAM = 0;
 SAVE_PLOTS = 1;
 SAVE_TRAJECTORY = 0;
 
-PATH = "..\latex\slike";
+PATH = '..\latex\slike';
 
 %% Adding folders to path:
 folder_path = fullfile(cd, 'ad-hoc swingup');

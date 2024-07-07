@@ -27,8 +27,10 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\beta [deg]');
 xlabel('t [s]');
 grid on;
-legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
+lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
+set(lgd,'Location','best');
+
 
 k = 2;
 
@@ -41,8 +43,10 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\beta} [deg/s]');
 xlabel('t [s]');
 grid on;
-legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
+lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
+set(lgd,'Location','best');
+
 
 k = 3;
 
@@ -55,8 +59,10 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\alpha [deg]');
 xlabel('t [s]');
 grid on;
-legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
+lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
+set(lgd,'Location','best');
+
 
 k = 4;
 subplot(5, 1, k);
@@ -68,8 +74,10 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\alpha} [deg/s]');
 xlabel('t [s]');
 grid on;
-legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
+lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
+set(lgd,'Location','best');
+
 
 k = 5;
 subplot(5, 1, k);
@@ -81,8 +89,9 @@ plot(t, state_reference(1:end, k), 'k--');
 ylabel('i [A]');
 xlabel('t [s]');
 grid on;
-legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
+lgd = legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
+set(lgd,'Location','best');
 
 fig2 = figure();
 fig2.Name = 'Disturbance';
@@ -96,7 +105,9 @@ plot(t, u_limit(2)*ones(size(t)), 'r--');
 xlabel('t [s]');
 ylabel('u [V]');
 
-legend('u [V]', 'u_{ref} [V]');
+lgd=legend('u [V]', 'u_{ref} [V]');
+set(lgd,'Location','best');
+
 hold off;
 
 
