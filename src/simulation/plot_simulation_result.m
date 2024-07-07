@@ -1,4 +1,4 @@
-function plot_simulation_result(states, ...
+function [fig1, fig2] = plot_simulation_result(states, ...
     states_measured, control, state_reference, control_reference, ...
     t, t1, t2, u_limit)
 
@@ -16,7 +16,8 @@ control = control(idx_t1:idx_t2, :);
 state_reference = state_reference(idx_t1:idx_t2, :);
 control_reference = control_reference(idx_t1:idx_t2, :);
 
-figure();
+fig1 = figure();
+fig1.Name = 'States';
 subplot(5, 1, k);
 hold on;
 plot(t, states_measured(1:end, k)*radian_to_degrees, '.', ...
@@ -83,8 +84,8 @@ grid on;
 legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
     ['x_{' num2str(k) ', ref}']);
 
-
-figure();
+fig2 = figure();
+fig2.Name = 'Disturbance';
 hold on;
 stairs(t, control);
 stairs(t, control_reference);
