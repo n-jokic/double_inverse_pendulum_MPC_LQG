@@ -94,7 +94,7 @@ lgd = legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
 set(lgd,'Location','best');
 
 fig2 = figure();
-fig2.Name = 'Disturbance';
+fig2.Name = 'Control';
 hold on;
 stairs(t, control);
 stairs(t, control_reference);

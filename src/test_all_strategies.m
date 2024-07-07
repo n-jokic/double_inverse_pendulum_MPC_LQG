@@ -1,4 +1,6 @@
 %% Model and simulation setup
+close all;
+
 system_model = @inverted_pendulum;
 u_limit = [u_min, u_max];
 t = 0 : dt : 2;
