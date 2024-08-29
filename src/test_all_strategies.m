@@ -3,15 +3,15 @@ close all;
 
 system_model = @inverted_pendulum;
 u_limit = [u_min, u_max];
-t = 0 : dt : 2;
+t = 0 : dt : 3.5;
 t1 = 0; 
-t2 = 2;
+t2 = 3.5;
 M = 2;
 reference_cutoff_angle = 5/180*pi; %angle when reference gets set to 0
 
 disturbance = zeros(length(t), length(x0));
-disturbance(t==2.5, 3) = 15/180*pi;
-disturbance(t==3, 3) = -15/180*pi;
+disturbance(t==2.5, 3) = 10/180*pi;
+disturbance(t==3, 3) = -10/180*pi;
 
 noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2];
 

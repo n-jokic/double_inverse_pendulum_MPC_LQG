@@ -38,7 +38,7 @@
 \newcommand{\pres}[2]{#1 \cap #2}
 \newcommand{\tnorm}{$t$-norm}
 \newcommand{\tkonorm}{$t$-konorm}
-
+\newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}}
 
 \renewenvironment{proof}[1][\proofname]{{\bfseries #1.}}
 
@@ -150,7 +150,7 @@
 	\section{Modeliranje sistema i analiza modela}
 	\subsection{Uvod} 
 	
-	Furuta penduluma (FP) je rotaciono klatno koje se pokreće motorom jednosmerne struje. Dva najveća zahteva u vezi sa ovim sistemom su podizanje klatna iz donjeg u gornji položaj i održavanje klatna u uspravnom, nestabilnom ravnotežnom stanju. U ovom radu razmatrane su kontrolne strategije za nelinearni problem uspravljanja i balansiranja FP u uspravnom  položaju. Iako ovo može delovati kao akademski problem, FP je ilustrativan za širok spektar dinamičkih sistema sa stvarnim primenama. Fokusiranje na ovu problematiku integrisano je u aktuelna istraživanja u oblasti sajber-fizičkih sistema (CPSs)\footnote{Sajber-fizički sistemi (CPSs) predstavljaju integraciju računarskih elemenata sa fizičkim sistemima, stvarajući tako dinamičko i uzajamno povezano okruženje.} \cite{inicijalna}. \\ 
+	Furuta penduluma (FP) je rotaciono klatno koje se pokreće motorom jednosmerne struje. Dva najveća zahteva u vezi sa ovim sistemom su podizanje klatna iz donjeg u gornji položaj i održavanje klatna u uspravnom, nestabilnom ravnotežnom stanju. U ovom radu razmatrane su  strategije upravljanja za nelinearni problem uspravljanja i balansiranja FP u uspravnom  položaju. Iako ovo može delovati kao akademski problem, FP je ilustrativan za širok spektar dinamičkih sistema sa stvarnim primenama. Fokusiranje na ovu problematiku integrisano je u aktuelna istraživanja u oblasti sajber-fizičkih sistema (CPSs)\footnote{Sajber-fizički sistemi (CPSs) predstavljaju integraciju računarskih elemenata sa fizičkim sistemima, stvarajući tako dinamičko i uzajamno povezano okruženje.} \cite{inicijalna}. \\ 
 	
 	%	Fizičari su uspešni u modelovanju fenomena u prirodi u iznenađujućem broju redova veličina. Iako se u većini slučajeva može samo težiti posmatranju, u malom, ali važnom podskupu, moguće je aktivno modifikovati ponašanje sistema. Ovo se postiže uključivanjem računarskih komponenti koje interaguju sa fizičkim sistemom, što čini osnovu istraživanja u oblasti sajber-fizičkih sistema. Teorija upravljanja se bavi izazovima u postizanju željenih performansi sistema, uključujući nestabilnost u otvorenoj sprezi, ograničenja u broju promenljivih koje se mogu aktivirati i ograničene informacije o stanju sistema.\\
 	
@@ -158,9 +158,15 @@
 	
 	Furuta pendulum, kao jednostavan primer nelinearnog sistema, služi kao osnovno sredstvo za istraživanje ideja u oblasti nelinearnog upravljanja. Takođe predstavlja prototip za praktično važne uređaje poput robotskih ruku cilindričnog oblika, rotacionih dizalica ili transportnih sistema za visoke objekte. Kontrolni problemi usmeravanja i balansiranja penduluma oko nestabilne ravnoteže su dobro proučeni.\\
 	
-	U rada \cite{inicijalna} se navodi da do trenutka kada je rad napisan, nelinearni problem uspravljanja FP nije rešavan optimalnom kontrolom. Korišćenjem optimalne kontrole, problem se elegantno formuliše kao minimizacija odgovarajućeg troška uz poštovanje određenih ograničenja. Primenom ove tehnike, autor istražuje savremene tehnike kontrole, njihovu primenljivost u sličnim problemima i razvija odgovarajuću kontrolnu tehniku za ovu klasu uređaja. Pored optimalne kontrole uspravljanja FP razmatrane su i ad hoc strategije koje se oslanjaju na zakone upravljanja izvedene iz analize sistema. Balansiranje klatna oko njegovog nestabilnog ravnotežnog stanja se obavlja korišćenjem LQG. 
+	U radu \cite{inicijalna} se navodi da do trenutka kada je rad napisan, problem uspravljanja FP nije rešavan metodama optimalnog upravljanja. Korišćenjem ovih metoda, problem se elegantno formuliše kao minimizacija odgovarajućeg troška uz poštovanje određenih ograničenja. Primenom ove tehnike, autor istražuje savremene tehnike upravljanja, njihovu primenljivost u sličnim problemima i razvija odgovarajuću strategiju upravljanja za ovu klasu uređaja. Pored primene optimalnog upravljanja razmatrane su i ad-hoc strategije koje se oslanjaju na principe izvedene iz fizike sistema. Balansiranje klatna oko njegovog nestabilnog ravnotežnog stanja se obavlja korišćenjem LQG. Primena LQG podrazumeva rešavanje problema kvadratnog programiranja nad linearizovnim sistemom i primenu Kalmanovog filtra za opservaciju stanja sistema. \\
 	
-	(uvod doraditi na kraju, navesti strukturu izvestaja...) napisati da je prvi deo nelinerno upravljanje, a balansiranje lineran...za prebacijvanje kontroler.. sistem nestabilan u otvorenoj sprezi, vodi se racuna da  pri prebacivanju ne dodje do nestabilnost, koriscenje linearnog, nelinearnog modela..
+	
+	
+	
+	
+	
+	
+	%(uvod doraditi na kraju, navesti strukturu izvestaja...) napisati da je prvi deo nelinerno upravljanje, a balansiranje lineran...za prebacijvanje kontroler.. sistem nestabilan u otvorenoj sprezi, vodi se racuna da  pri prebacivanju ne dodje do nestabilnost, koriscenje linearnog, nelinearnog modela..
 	
 	\newpage
 	
@@ -168,16 +174,20 @@
 	
 	Modeli su ključni elementi u projektovanju kontrolera jer omogućavaju simulaciju sistema i testiranje kontrolera u preliminarnoj fazi, u offline režimu. U slučaju korišćenja nelinearnih MPC kontrolera, zahteva se da model bude ugradjen u sistem.  \\
 	
-	U zavisnosti od pristupa koji se koristi, za dizajn kontrolera potrebni su različiti tipovi modela. Pristupi koji se primenjuju za podizanje klatna iz donjeg u gornji položaj, kao što su ad hoc i optimalno upravljanje zahtevaju nelinearne modele, jer sistem prati putanju u prostoru stanja koja prolazi kroz različite regione sa različitom dinamikom. S druge strane, održavanje klatna u gornjem položaju zahteva samo kontroler koji može raditi u lokalnom regionu, te je za postizanje ovog cilja potreban samo linearni model.  \\
+	U zavisnosti od pristupa koji se koristi, za dizajn kontrolera potrebni su različiti tipovi modela. Pristupi koji se primenjuju za podizanje klatna iz donjeg u gornji položaj, kao što su ad hoc i optimalno upravljanje zahtevaju nelinearne modele, jer sistem prati putanju u prostoru stanja koja prolazi kroz različite regione sa različitom dinamikom. S druge strane, održavanje klatna u gornjem položaju zahteva samo kontroler koji može raditi nekoj okolini gorenjg poloz"aja, te je za postizanje ovog cilja potreban samo linearni model.  \\
 	
-	Linearni modeli su mogu dobiti na dva načina: Jakonijan linearnizacijom nelinearnog modela u okolini želeljenog ravnotežnog stanja ili tehnikama identifikacije, gde se parametri linearnog modela procenjuju iz ekseprimenata. U otvorenoj sprezi, gornji položaj je nestabilan, i ako se primeni mala smetnja na ulazu, izlazni signal će rasti bez ograničenja. Da bi se izbegao ovaj problem, potrebno je prikupiti podatke u slučaju kada se na sistem primeni upravljanje sa stabilnim kontrolerom.  Oblast identifikacije je detaljno proučavana krajem 1960-ih i početkom 1970-ih  \cite{identifikacija}. Glavni izazov je bio kako ukloniti šum koji se kontaminira sa ulazom i izlazom sistema.  \\
+	Linearni modeli su mogu dobiti na dva načina: Jakobijan linearnizacijom nelinearnog modela u okolini želeljenog ravnotežnog stanja ili tehnikama identifikacije, gde se parametri linearnog modela procenjuju iz ekseprimenata. U otvorenoj sprezi, gornji položaj je nestabilan, i ako se primeni mala smetnja na ulazu, izlazni signal će rasti bez ograničenja. Da bi se izbegao ovaj problem, potrebno je prikupiti podatke u slučaju kada se na sistem primeni upravljanje sa stabilnim kontrolerom.  Oblast identifikacije je detaljno proučavana krajem 1960-ih i početkom 1970-ih  \cite{identifikacija}. Glavni izazov je bio kako ukloniti šum koji se kontaminira sa ulazom i izlazom sistema.  \\
 	
 	
 	Furuta pendulum je dinamički sistem koji se sastoji od dve osnovne komponente: \\
 	
-	Horizontalna ruka: Ovo je čvrsta šipka ili krak koji je postavljen horizontalno. Na jednom kraju može biti pričvršćen za oslonac, dok je drugi kraj često povezan sa vertikalnim delom sistema, poznatim kao pendulum. Horizontalna ruka služi kao platforma za postavljanje i rotiranje vertikalnog penduluma. \\
+	\begin{enumerate}
+		\item Horizontalna ruka: Ovo je čvrsta šipka ili krak koji je postavljen horizontalno. Na jednom kraju može biti pričvršćen za oslonac, dok je drugi kraj često povezan sa vertikalnim delom sistema, poznatim kao pendulum. Horizontalna ruka služi kao platforma za postavljanje i rotiranje vertikalnog penduluma. \\
+		
+		\item Vertikalni pendulum: Ovaj deo predstavlja masu (obično šipka ili krak) koje je povezano sa horizontalnom rukom na jednom kraju, a drugi kraj se slobodno kreće. Rotacija penduluma oko vertikalne ose može se kontrolisati pomoću motora koji je integrisan u sistem. Ovaj motor omogućava sistemu da realizuje oscilatorne pokrete.\\
+		
+	\end{enumerate}
 	
-	Vertikalni pendulum: Ovaj deo predstavlja masu (obično šipka ili krak) koje je povezano sa horizontalnom rukom na jednom kraju, a drugi kraj se slobodno kreće. Rotacija penduluma oko vertikalne ose može se kontrolisati pomoću motora koji je integrisan u sistem. Ovaj motor omogućava sistemu da realizuje oscilatorne pokrete.\\
 	
 	\begin{figure}[!htb]
 		\centering
@@ -214,6 +224,7 @@
 	
 	Gde za svako kruto telo $i$, $M_i$ je masa tela, $v_i$ je brzina centra mase, $I_i$ matrica inercije, $\omega_i$ ugaona brzina, $r_i$ pozicija od centra mase, i $g$ je gravitaciono ubrzanje.\\
 	
+	\newpage
 	Langranžijan se računa kao :
 	
 	\begin{equation}
@@ -245,6 +256,8 @@
 	zanemarene su dinamičke karakteristike sistema: ne-elektične disipativne sile modelovane su kao viskozno trenje proporcionalnoj ugaonoj brzini zglobova, spoj između tela smatra se savršenim, uticaj, promena električnih karakteristika usled promene temperature aktuatora, zanemarivanje kapaciteta i induktivnosti žica raspodelejnih u prostoru i mehanički delovi su smatrani potpuno krutim.\\
 	
 	
+	\newpage
+	
 	Konačno model u prostoru stanja glasi:
 	
 	\begin{equation}
@@ -261,7 +274,7 @@
 		\label{eq:nonModel}
 	\end{equation}\\
 	
-	U radu \cite{inicijalna} za identifikaciju parametara korišćena je metoda najmanjih kvadrata (mozda dopisati jos koju recenicu). Eksperiment su izvodili nad aparaturom prikazanom na slici (Sl. \ref{fig:eksper}). Rezultati su predstavljeni u tabeli \ref{tab:tab1}.
+	U radu \cite{inicijalna} za identifikaciju parametara korišćena je modifikovana metoda najmanjih kvadrata. Autor navodi da zbog prisutnih nelinearnosti primena klasi"cne metode najmanjih kvadrata nije dovoljno pouzdana. Metoda najmanjih kvadrata podrazumeva da se za dati sistem u prostoru stanja $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}, \mathbf{u}, \vect{\theta}),~ \mathbf{y} = \mathbf{h}(\mathbf{x})$ odrede nepoznati parametri $\vect{\theta}$ minimizacijom kvadratne funkcije cene $J_N(\vect{\theta}) = ||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$. Modifikacija koju autor uvodi podrazumeva uvo\dj enje apriornog znanja o referentnoj vrednosti parametara $\vect{\overline{\theta}}$ i standardnoj devijaciji $\vect{\sigma_{\vect{\theta}}}$. Kona"cno funkcija cene poprima slede\'ci oblik: $J_N(\vect{\theta}) = \vect{\sigma_{\vect{\theta}}}^{-1}||\vect{\theta}-\vect{\overline{\theta}}||^2_2 +  \vect{\sigma_{\vect{y}}}^{-1}||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$, primenom funkije cene ovog oblika se zapravo primenjuje Bejzova metoda najmanjih kvadrata. Eksperiment za potrebe identifikacije parametara je sproveden nad aparaturom prikazanom na slici (Sl. \ref{fig:eksper}). Rezultati su predstavljeni u tabeli \ref{tab:tab1}.
 	
 	\begin{table}[ht]
 		\centering
@@ -288,8 +301,41 @@
 	
 	
 	
+	\clearpage
 	
 	\subsubsection{Matlab model}
+	
+	Matlab model sistema je realizovan na osnovu izvedenih jedna"cina stanja (\ref{eq:nonModel}). Prilikom implementcije modela inicijalno nije vo\dj eno ra"cuna o adekvatnoj diskretizaciji kontinualnog modela. Primenjena je Ojlerova aproksimacija $\dot{\mathbf{x}} \approx \frac{\mathbf{x}_{k+1} - \mathbf{x}_{k}}{\Delta t}$, $\mathbf{x}_{k}$ predstavlja k-ti odbirak kontinualnog stanja $\mathbf{x}$.
+	
+	\begin{equation} \label{eq:Ojler}
+		\vect{x_{k+1}} = \vect{x_{k}} + \Delta t \vect{f}(\vect{x_k}, \vect{u_k})
+	\end{equation}.
+	
+	Me\dj utim, primena Ojlerove metode nije adekvatna za ovaj sistem usled velikih numeri"ckih gre"saka i nestabilnosti rezultuje\'ceg modela. Dodatnim koraka diskretizacije $\Delta t$ je mogu\'ce stabilizovati Ojlerovu metodu, ali to nije usvojeno kao prihvatljivo re"senje.\\
+	
+	Problem nestabilnog modela je re"sen primenom Runge-Kuta 4(eng. \textit{Runge-Kutta}) metode numeri"cke integracije, dalje u tekstu RK4. Primenom RK4 integracija se vr"si na slede\'ci na"cin: 
+	\begin{align} \label{eq:RK4}
+		\vect{x_{k+1}} &= \vect{x_k} + \frac{\Delta t}{12}(\vect{k_1} + 2\vect{k_2}
+			+ 2\vect{k_3} + \vect{k_4}), \\			
+		\vect{k_1} &= \vect{f}(\vect{x_k}, \vect{u_k}), \\
+		\vect{k_2} &= \vect{f}(\vect{x_k} + \Delta t \frac{\vect{k_1}}{4}, \vect{u_k}), \\
+		\vect{k_3} &= \vect{f}(\vect{x_k} + \Delta t \frac{\vect{k_2}}{4}, \vect{u_k}), \\
+		\vect{k_4} &= \vect{f}(\vect{x_k} +  \Delta t \frac{\vect{k_3}}{2}, \vect{u_k});		
+	\end{align}
+	
+	Iz jedna"cina (\ref{eq:RK4}) se vidi da se podrazumeva konstatno upravljanja tokom trajanja jedne periode odabiranja. Pored navedene metode postoje i brojne modifikacije koje pripadaju "siroj familiji Runge-Kuta metoda numeri"cke integracije. \\
+	
+	
+	
+	
+	\begin{figure}[!htb]
+		\centering
+			\includegraphics[width=0.45\linewidth]{slike/Runge_Kutta_slopes.eps}
+			\caption{}
+			\label{fig:RK4}
+		
+		\caption{Vizuelizacija Runge-Kuta integracije}
+	\end{figure}
 	
 	
 	
@@ -298,37 +344,37 @@
 	
 	\clearpage
 	
+	% Rekao bih da ponasanje u otvorenoj sprezi nije neophodno, u pitanju je klatno
+	%\subsection{Ponašanje sistema u otvorenoj sprezi}
 	
-	\subsection{Ponašanje sistema u otvorenoj sprezi}
 	
 	
-	
-	\clearpage 
+	%\clearpage 
 	\subsection{Linearizacija sistema}
 	\label{sec:linearizacija}
 	
-	Nelinearni model (\ref{eq:nonModel}) se može linearizovati razvijanjem u Tejlorov red u okoline tačke $(\bar{x}, \bar{u})$:
+	Nelinearni model (\ref{eq:nonModel}) se može linearizovati razvijanjem u Tejlorov red u okoline tačke $(\vect{\bar{x}}, \bar{u})$:
 	\begin{equation}
-		\mathbf{f}(\mathbf{x}, u) \approx \mathbf{f}(\mathbf{\bar{x}}, \bar{u}) + \nabla_x \mathbf{f}|_{(\bar{x},\bar{u})} (\mathbf{x} - \mathbf{\bar{x}}) + \frac{\partial \mathbf{f}}{\partial u}|_{(\mathbf{\bar{x}},\bar{u})} (u - \bar{u}). \label{eq:linearization}
+		\mathbf{f}(\mathbf{x}, u) \approx \mathbf{f}(\mathbf{\bar{x}}, \bar{u}) + \nabla_{\vect{x}} \mathbf{f}|_{(\vect{\bar{x}},\bar{u})} (\mathbf{x} - \mathbf{\bar{x}}) + \frac{\partial \mathbf{f}}{\partial u}|_{(\mathbf{\bar{x}},\bar{u})} (u - \bar{u}). \label{eq:linearization}
 	\end{equation}
 	
 	Neka su $A = \nabla_{\mathbf{x}} \mathbf{f}|_{(\bar{\mathbf{x}},\bar{u})}$, $B = \frac{\partial \mathbf{f}}{\partial u}|_{(\bar{\mathbf{x}},\bar{u})}$, $\Delta \mathbf{x} = \mathbf{x} - \bar{\mathbf{x}}$, i $\Delta u = u - \bar{u}$.
 	Prethodna jednačina se može napisati kao:
 	\begin{equation}
-		\dot{\mathbf{x}} \approx A\Delta \mathbf{x} + B\Delta u + f(\bar{\mathbf{x}}, \bar{u}). \label{eq:linearized_system}
+		\dot{\mathbf{x}} \approx A\Delta \mathbf{x} + B\Delta u + \vect{f}(\bar{\mathbf{x}}, \bar{u}). \label{eq:linearized_system}
 	\end{equation}
 	
-	Linearizacija se obavlja za različite $\bar{\mathbf{x}}$ čime se dolazi do porodice linearnih modela. Linearni model u okolini tačke  $f(\bar{x} = 0, u = 0) = 0$, može se napisati kao:
+	Linearizacija se obavlja za različite $\bar{\mathbf{x}}$ čime se dolazi do porodice linearnih modela. Linearni model u okolini tačke  $\vect{f}(\vect{\bar{x}} = \vect{0}, u = 0) = \vect{0}$, može se napisati kao:
 	\begin{align}
 		\begin{split}
-			\dot{x}(t) &= Ax(t) + Bu(t) \\
-			y(t) &= Cx(t) + Du(t)
+			\vect{\dot{x}}(t) &= A\vect{x}(t) + Bu(t) \\
+			y(t) &= C\vect{x}(t) + Du(t)
 		\end{split}
 		\label{eg:lin_mod}
 	\end{align}
 	
 	
-	gde  $x$, $u$, i $y$ označavaju odstupanje od ravnotežnog stanja
+	gde  $\vect{x}$, $u$, i $y$ označavaju odstupanje od ravnotežnog stanja
 	\[
 	\mathbf{A} =
 	\begin{bmatrix}
@@ -365,13 +411,13 @@
 		0 \\
 		0
 	\end{bmatrix}
-	\]
+	\] \\[16pt]
 	
 	
 	\subsubsection{Kontrolabilnost}
 	
 	Kontinualni linearni sistem se smatra potpuno kontrolabilnim ako i samo ako iz početnog stanja, uz odgovarajući ulaz $u(t)$ sa $0 < t \leq t_f$ i konačnim horizontom $t_f$, može da se postigne
-	proizvoljno stanje $x(t_f) = x_f$. \\
+	proizvoljno stanje $\vect{x}(t_f) = \vect{x_f}$. \\
 	
 	Linearni sistem je potpuno kontrolabilan ako matrica kontrolabilnosti
 	\begin{align}
@@ -382,25 +428,26 @@
 	
 	ima pun rang $n$. \\
 	
-	Kada se napon primeni na motor, stvara se struja i obrtni moment $\tau_1$ se stvara u centru rotacije horizontalne ruke. Na metalnom vratilu gde je klatno pričvršćeno, sila nastala od $\tau_1$ duž ruke $l_{e1}$ je horizontalna i pravolinijska u odnosu na oba $l_{e1}$ i $\tau_1$, u skladu sa opštom formulom
+	\clearpage
+	Kada se napon primeni na motor, stvara se struja i obrtni moment $\tau_1$ se stvara u centru rotacije horizontalne ruke. Na metalnom vratilu gde je klatno pričvršćeno, sila nastala od $\tau_1$ duž ruke $l_{e1}$ je horizontalna i pravolinijska u odnosu na oba $l_{e1}$ i $\tau_1$, u skladu sa opštom formulom:
 	
 	\begin{align}
 		\tau = r \times F. \quad 
 	\end{align}
 	
-	Obrtni moment u centru mase klatna takođe je dat ovom formulom, iz kojeg se može izraziti amplituda $\tau_2$ kao funkcija ugla $\beta$
+	Obrtni moment u centru mase klatna takođe je dat ovom formulom, iz kojeg se može izraziti amplituda $\tau_2$ kao funkcija ugla $\beta$:
 	
 	\begin{align}
 		\tau_2 = l_{cm2} F \cos \beta, \quad
 	\end{align}
 	
 	
-	gde je $l_{cm2}$ rastojanje između metalnog vratila i centra mase klatna. Iz gornjih jednačina jasno je da je ulaz, napon primenjen na motor, direktna akcija na sve stanja sistema - struju motora, položaj i brzinu horizontalne ruke, kao i položaj i brzinu klatna. Postoji izuzetak za $\cos \beta = 0$, tj. kada je klatno horizontalno. U ovom slučaju, položaj i vektorske sile su paralelni, te stoga nije moguće primeniti obrtni moment. Stoga, varijable klatna nisu kontrolabilne u ovom trenutku.
+	gde je $l_{cm2}$ rastojanje između metalnog vratila i centra mase klatna. Iz gornjih jednačina jasno je da je ulaz, napon primenjen na motor, direktna akcija na sve stanja sistema - struju motora, položaj i brzinu horizontalne ruke, kao i položaj i brzinu klatna. Postoji izuzetak za $\cos \beta = 0$, tj. kada je klatno horizontalno. U ovom slučaju, položaj i vektorske sile su paralelni, te stoga nije moguće primeniti obrtni moment. Stoga, varijable klatna nisu kontrolabilne u ovom trenutku. \\[16pt]
 	
 	
 	\subsubsection{Opservabilnost}
 	
-	Kontinualni sistem se smatra potpuno opservabilnim ako je poznavanje $y(t)$ za $0 \leq t \leq t_1$, sa $t_1$ konačnim, dovoljno za određivanje početnog stanja $x(0)$. \\
+	Kontinualni sistem se smatra potpuno opservabilnim ako je poznavanje $y(t)$ za $0 \leq t \leq t_1$, sa $t_1$ konačnim, dovoljno za određivanje početnog stanja $\vect{x(0)}$. \\
 	
 	Linearni sistem je opservabilan ako matrica
 	
@@ -413,23 +460,23 @@
 			CA^{n-1}
 		\end{bmatrix} \quad
 	\end{align}
-	ima pun rang $n$.
+	ima pun rang $n$. \\[16pt]
 	
 	\subsubsection{Stabilnost}
 	
 	
 	
-	Tačka \(\bar{x}\) dinamičkog sistema se klasifikuje kao Liapunov stabilna ako važi:
+	Tačka \(\vect{\bar{x}}\) dinamičkog sistema se klasifikuje kao Ljapunov stabilna ako važi:
 	\begin{align}
-		\forall \epsilon > 0, \exists \delta > 0 : ||x(0) - \bar{x}|| < \delta \land t > 0 \Rightarrow ||x(t) - \bar{x}|| < \epsilon, \quad 
+		\forall \epsilon > 0, \exists \delta > 0 : ||\vect{x(0)} - \vect{\bar{x}}|| < \delta \land t > 0 \Rightarrow ||\vect{x}(t) - \vect{\bar{x}}|| < \epsilon, \quad 
 	\end{align}
 	i asimptotski stabilna ako dodatno važi:
 	
 	\begin{align}
-		\exists \epsilon > 0 : ||x(0) - \bar{x}|| < \epsilon \Rightarrow \lim_{t \to \infty} x(t) = \bar{x}. \quad
+		\exists \epsilon > 0 : ||\vect{x(0)} - \vect{\bar{x}}|| < \epsilon \Rightarrow \lim_{t \to \infty} \vect{x}(t) = \vect{\bar{x}}. \quad
 	\end{align}
 	
-	Asimptotska stabilnost nelinearnog sistema može se proceniti linearnizovanim sistemima dobijenim kod svake fiksne tačke pomoću Liapunovljeve indirektne metode. Moguće je zaključiti da, za linearnizovani sistem (\ref{eg:lin_mod}):
+	Asimptotska stabilnost nelinearnog sistema može se proceniti linearnizovanim sistemima dobijenim kod svake fiksne tačke pomoću Ljapunovljeve indirektne metode. Moguće je zaključiti da, za linearnizovani sistem (\ref{eg:lin_mod}):
 	\begin{enumerate}
 		\item ako sve sopstvene vrednosti matrice \(A\) imaju negativne realne delove, tada je fiksna tačka nelinearnog sistema stabilna;
 		\item ako bar jedna sopstvena vrednost matrice \(A\) ima pozitivan realni deo, tada je fiksna tačka nelinearnog sistema nestabilna;
@@ -456,10 +503,12 @@
 		\label{tab:5_tacaka}
 	\end{table}
 	
-	U tabeli \ref{tab:5_tacaka} je prikazana analiza za 5 različitih tačaka, čime se pokazuje da je $x_3 = 0$ (kada se sistem se nalazi u gornjem položaju) nestabilno stanje, ali ispunjave uslove kontrolabilnosti i opservabilnosti.
+	U tabeli \ref{tab:5_tacaka} je prikazana analiza za 5 različitih tačaka, čime se pokazuje da je $x_3 = 0$ (kada se sistem se nalazi u gornjem položaju) nestabilno stanje, ali ispunjave uslove kontrolabilnosti i opservabilnosti. 
+	\\[16pt]
 	
-	\clearpage
 	\subsection{Poremećaji u sistemu}
+	
+	poreme\'caj
 	
 	
 	
