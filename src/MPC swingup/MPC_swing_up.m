@@ -7,7 +7,8 @@ classdef MPC_swing_up < handle
         state_dynamics = @inverted_pendulum;
         
         % norm for control
-        norm
+        u_norm = 2;
+        x_norm = 2;
 
         % Prediction setup:
         M_rk4_iter
@@ -17,7 +18,7 @@ classdef MPC_swing_up < handle
         %Number of states:
         n_controls = 1;
         n_states = 5;
-        n_reference = 2;
+        n_reference = 5;
 
         % Weighting matricies
         Qw = [(1/pi*180)^2, 0, 0, 0, 0; 
@@ -25,17 +26,21 @@ classdef MPC_swing_up < handle
                0, 0, (1/pi*180)^2, 0, 0;
                0, 0, 0, (1/2)^2, 0 
                0, 0, 0, 0, 1];
-        Rw = 1/25;
+        Rw = 1/36;
         Ow = [1, 0, 0, 0, 0; 0, 0, 1, 0, 0];
-        Qwobs = [(1/pi*180)^2*0, 0; 0 (1/pi*180)^2];
-        gamma1 = 1.2;
-        gamma2 = 0.05;
-        gamma3 = 4;
+        Qwobs = [(1/pi*180)^2, 0, 0, 0, 0; 
+               0, (1/2)^2, 0, 0, 0;
+               0, 0, (1/pi*180)^2, 0, 0;
+               0, 0, 0, (1/2)^2, 0 
+               0, 0, 0, 0, 1];
+        gamma_control = 1;
+        gamma_final = 10;
 
         % NLP setup
-        max_iter = 2000;
-        acceptable_tol = 5e-3;
-        acceptable_obj_change_tol = 1e-4;
+        max_iter = 6000;
+        acceptable_tol = 5e-4;
+        acceptable_obj_change_tol = 1e-5;
+   
         % MPC solver 
         solver
 
@@ -63,15 +68,9 @@ classdef MPC_swing_up < handle
     
     methods
         % Constructor
-        function obj = MPC_swing_up(norm, u_limit, ...
+        function obj = MPC_swing_up(u_limit, ...
                 M_rk4_iter, dt, N)
             % Initialize properties and setup MPC parameters
-
-            if norm == 1
-                obj.norm = @(u) obj.Rw^2*abs(u);
-            elseif norm == 2 
-                obj.norm = @(u) u'*obj.Rw*u;
-            end
 
             obj.u_max = u_limit(2);
             obj.u_min = u_limit(1);
@@ -113,6 +112,16 @@ classdef MPC_swing_up < handle
         );
 
         end
+
+        function result = norm(obj, x, Q, l)
+
+            if l == 1
+                result = sum(Q.^0.5*abs(x));
+            elseif l == 2 
+                result = x'*Q*x;
+            end
+
+        end
         
         % Method to set up the MPC problem
         function obj=setupMPCProblem(obj)
@@ -131,22 +140,33 @@ classdef MPC_swing_up < handle
 
             st  = X(:,1); % initial state
             con_vctr = [con_vctr;st-P(1:obj.n_states)]; % initial condition constraints
+            current_end = length(con_vctr);
+            con_vctr = [con_vctr; zeros(obj.n_states*obj.N, 1)];
             for k = 1:obj.N
                 st = X(:,k);  con = U(:,k);
-                cost = cost+...
-                st'*obj.Qw*st*obj.dt*obj.gamma1...
-                + obj.norm(con)*obj.dt*obj.gamma2; % calculate obj
+                cost = cost+ ...
+                obj.norm(con, obj.Rw, obj.u_norm)*obj.gamma_control*obj.dt + ...
+                obj.norm(st, ...
+                obj.Qw, obj.x_norm)*obj.dt;
+
                 st_next = X(:,k+1);
                 
                
                 st_next_RK4=rk4_integration( ...
                     st, con, @obj.state_transition, obj.dt, obj.M_rk4_iter);   
     
-                con_vctr = [con_vctr;st_next-st_next_RK4]; % compute constraints % new
-            end
+                con_vctr(current_end+1:current_end+obj.n_states, 1) = ...
+                    st_next-st_next_RK4; % compute constraints % new
 
-            cost = cost + (obj.Ow*st-P(obj.n_states+1:end))'*...
-                obj.Qwobs*(obj.Ow*st-P(obj.n_states+1:end))*obj.gamma3;
+                current_end = current_end+obj.n_states;
+            end
+            
+
+            % N*dt is intoduced to make scales invariant to horizon length
+            cost = cost + ...
+                obj.norm(obj.Ow*st-P(obj.n_states+1:end), ...
+                obj.Qwobs, obj.x_norm)*obj.gamma_final*obj.N*obj.dt; % final state
+
             % make the decision variable one column  vector
             OPT_variables = [reshape(X,obj.n_states*(obj.N+1),1);
                 reshape(U,obj.n_controls*obj.N,1)];
@@ -198,10 +218,13 @@ classdef MPC_swing_up < handle
         
         % Method to run MPC loop
         function u = runMPC(obj, ...
-                current_state)
-            
+                current_state, reference)
+           
+           %initial state
            obj.p(1:obj.n_states)   = current_state;    
            obj.x0(1:obj.n_states)  = current_state;
+
+           obj.p(obj.n_states+1:end) = reference;
            sol = obj.solver('x0', obj.x0, 'lbx', obj.args.lbx, 'ubx', ...
                obj.args.ubx, 'lbg', obj.args.lbg, 'ubg', obj.args.ubg, ...
                'p',obj.p);

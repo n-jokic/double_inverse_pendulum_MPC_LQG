@@ -51,15 +51,15 @@ if SAVE_PARAM
     'Lb', 'R', 'Kt', 'Kf', 'g');
 end
 
-u_min = -5;
-u_max = 5;
+u_min = -6;
+u_max = 6;
 %% Simulation params:
 dt = 0.001;  % Sampling time [s]
 t_end = 10;  % Simuation duration [s]
 time = 0:dt:t_end;  % time axis [s]
 
 % Initial states
-x0 = [0;0;0;0;0];
+x0 = [0;pi;0;0;0];
 
 % Initial control
 u0 = 0;
