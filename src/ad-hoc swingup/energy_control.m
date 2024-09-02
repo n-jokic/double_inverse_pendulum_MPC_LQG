@@ -3,8 +3,6 @@ function u = energy_control(x, r)
     
     load parameters.mat J0 J2 Lcm2 Le1 m2 g 
     
-    umax = 5;
-    umin = -5;
     
     kv = 0.68;
     E0 = 0;

@@ -1,11 +1,24 @@
 %% Model and simulation setup
 close all;
 
+%% Model params:
+Le1 = 229/1000; % Lenght of the horizontal arm [m]
+J0 = 87.04/1000; % Moment of inertia at the base joint of the horizontal arm and pendulum [kg*m^2]
+Ka1 = 1.6/1000; % Friction coeficient between base and the horizontal arm [N*m*s]
+m2 = 311/1000; % Mass of the pendulum [kg]
+Lcm2 = 406/1000; % Distance from axis of rotation to centre of mass of the pendulum[m]
+J2 = 28.39/1000; % Moment of inertia at the joint of the pendulum[kg*m^2]
+Ka2 = 0.139/1000; % Friction coeficient between the horizontal arm and the pendulum [N*m*s]
+Lb = 3.3/1000; % Electric impendance of the motor (imaginary part) [H]
+R = 2.272; % Electric internal resistance of the motor [ohm]
+Kt = 0.699; % Counter-electromotive force term, coupling the angular speed and current of the motor [V*s]
+Kf = 3.379; % Torque produced by the motor per current unit [V*s]
+
 system_model = @inverted_pendulum;
 u_limit = [u_min, u_max];
 t = 0 : dt : 3.5;
 t1 = 0; 
-t2 = 2.3;
+t2 = 3.5;
 M = 2;
 reference_cutoff_angle = 10/180*pi; %angle when reference gets set to 0
 
@@ -13,7 +26,7 @@ disturbance = zeros(length(t), length(x0));
 disturbance(t==2.5, 3) = 10/180*pi;
 disturbance(t==3, 3) = -10/180*pi;
 
-noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2]*0;
+noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2]/5;
 
 
 %% MPC_L2 + gain_scheduling

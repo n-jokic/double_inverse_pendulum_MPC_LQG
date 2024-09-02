@@ -334,7 +334,7 @@
 			\caption{}
 			\label{fig:RK4}
 		
-		\caption{Vizuelizacija Runge-Kuta integracije}
+		\caption{Vizuelizacija Runge-Kuta integracije \cite{rk4}}
 	\end{figure}
 	
 	
@@ -525,8 +525,6 @@
 		\item Horizontalni ugao  $\alpha \in [-180, 180] ~\text{°}$
 	\end{itemize}
 	
-	Ograni"cenje napona motora i horizontalnog ugla su fizi"cke prirode. Ograni"cenje vertikalnog ugla se odnosi na region gde LQR treba da stabili"se klatno.
-	
 	\clearpage
 	
 	
@@ -617,9 +615,9 @@
 	\end{equation}, 
 	uz po"cetni uslov $\vect{\lambda}^T(t) = \Psi_{\mathbf{x}}(\mathbf{x}(T))$.\\
 	
-	U ovom radu za potrebe pronala"zenje optimalne trajektorije primenjujemo MPC implementiran pomo\'cu biblioteke za optimalno upravljanje \cite{CASADI}. Ovaj softverski paket omogu\'cuje korisniku da konstrui"se optimizacione probleme, dok se re"savanje prosle\dj uje namenskim bibliotekama za re"savanje optimizacionih problema napisanih u C programskom jeziku. \\
+	U ovom radu za potrebe pronala"zenje optimalne trajektorije primenjujemo MPC implementiran pomo\'cu biblioteke za optimalno upravljanje \cite{CASADI}. Ovaj softverski paket omogu\'cuje korisniku da formuli"se optimizacione probleme, dok se re"savanje prosle\dj uje namenskim bibliotekama za re"savanje optimizacionih problema napisanih u C programskom jeziku. \\
 	
-	Konstrukcija MPC za potrebe nala"zenja optimalne trajektorije, odnosno optimalnog upravljanja, se razlikuje u zavisnosti od metode koja se koristi za re"savanje optimizacionog problema. U ovom radu se primenjuje \emph{multiple shooting} metoda. Ova metoda pripada familiji direktnih za re"savanje problema optimalnog upravljanja. \emph{Multiple shooting} podrazumeva diskretizaciju stanja sistema kao i upravljanja, a zatim re"savanje optimizacionog minimizacijom cene $J(\mathbf{u}(t))$ pod uslovom da su parcijalne trajektorije na granicama kontinualne. Odnosno na intervalu $t\in[t_i, t_{i+1}]$ se re"sava diferencijalna jedna"cina:
+	 Formulacija MPC za potrebe nala"zenja optimalne trajektorije, odnosno optimalnog upravljanja, se razlikuje u zavisnosti od metode koja se koristi za re"savanje optimizacionog problema. U ovom radu se primenjuje \emph{multiple shooting} metoda. Ova metoda pripada familiji direktnih za re"savanje problema optimalnog upravljanja. \emph{Multiple shooting} podrazumeva diskretizaciju stanja sistema kao i upravljanja, a zatim re"savanje optimizacionog minimizacijom cene $J(\mathbf{u}(t))$ pod uslovom da su parcijalne trajektorije na granicama kontinualne. Odnosno na intervalu $t\in[t_i, t_{i+1}]$ se re"sava diferencijalna jedna"cina:
 	\begin{align}\label{eq:mutiple_shooting}
 		\dot{x}_i(t; s_i; u_i) &= f(x_i(t; s_i; u_i)) \\
 		x_i(t; s_i; u_i) &= s_i
@@ -633,7 +631,28 @@
 		s_{i+1} - x_i(t_{i+1}; s_i; u_i) &= 0\\
 		h(s_i, u_i) &\geq 0\\
 		r(s_N) &\geq 0
-	\end{align}, gde $h(s_i, u_i)$ i $r(s_N)$ predstavljaju ograni"cenja nad trajektorijom i krajem trajektorije.
+	\end{align}, gde $h(s_i, u_i)$ i $r(s_N)$ predstavljaju ograni"cenja nad trajektorijom i krajem trajektorije. \cite{multiple_shooting}\\
+	
+	Prilikom implementacije MPC primenom \cite{CASADI} paketa definisani su slede\'ci parameti:
+	\begin{itemize}
+		\item Funkcija cene: $J = \gamma_1||\mathbf{x}(T)||^2_{\mathbf{Q}_T} + \sum_{i = 0}^{N-1}\gamma_2||\mathbf{x}(t_i)||^2_{\mathbf{Q}} + \gamma_3||u(t_i)||^2_{R}$.
+		\item Horizont predikcije $N = 2500$.
+		\item Matrice $\mathbf{Q}_T$, $\mathbf{Q}$ i skalar $R$ su izabrani tako da normalizuju stanja, odnosno upravljanje. 
+		\item Koficijenti skaliranja: $\gamma_1 = 0.1N\Delta t$, $\gamma_2=\gamma_3=\Delta t$. 
+		
+	\end{itemize}, 
+	pri "cemu su koficijenti skaliranja birani tako da suma aproksimira integral. Me\dj utim, bitan je samo relativan odnos ovih koeficijenata, pa mogu\'ce izabrati $\gamma_1 = 0.1N$, $\gamma_2=\gamma_3=1$. Prilikom primene \emph{multiple shooting} metode neophodno je izra"cunavanje $x(t_{i+1}; s_i; u_i)$ na osnovu po"cetne ta"cke trajektorije $s_i$, za te potrebe se primenjuje RK4 numeri"cka integracija sa korakom 1ms. \\
+	
+	Zbog problema sa konvergencijom u ovom radu su uvedene dve modifikacije:
+	\begin{itemize}
+		\item Ispituje je se samo $p=2$ norma.
+		\item Matrica $\mathbf{Q}_T$ je svuda nula osim za stanja $\alpha$ i $\beta$.
+	\end{itemize}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -689,7 +708,7 @@
 	
 	\begin{figure}[!h]
 		\centering
-		\includegraphics[width=0.8\linewidth]{slike/lqr.jpg}
+		\includegraphics[width=0.6\linewidth]{slike/lqr.jpg}
 		\caption{Blok dijagram feedback kontrolera \cite{inicijalna}}
 		\label{fig:lqr}
 	\end{figure}
@@ -707,12 +726,12 @@
 	
 	\begin{figure}[!h]
 		\centering
-		\includegraphics[width=0.6\linewidth]{slike/gainSc.jpg}
+		\includegraphics[width=0.5\linewidth]{slike/gainSc.jpg}
 		\caption{Gain Scheduling kontroler \cite{inicijalna}}
 		\label{fig:ganSc}
 	\end{figure}
 	
-	Svaki LQR kontroler, koji je dizajniran nezavisno, koriguje vrednost ulazne promenljive kako bi aproksimirao ponašanje stvarnog sistema prema onom predviđenom u referentnoj putanji.
+	Svaki LQR kontroler, koji je dizajniran nezavisno, koriguje vrednost ulazne promenljive kako bi aproksimirao ponašanje stvarnog sistema prema onom predviđenom u referentnoj putanji.\\
 	
 	\begin{figure}[!h]
 		\centering
@@ -720,6 +739,24 @@
 		\caption{Arhitektura Gain Scheduling kontrolera. Vektor $K_i$, $i \in \{1, \ldots, 6\}$ se bira u skladu sa trenutnim uglom klatna \cite{inicijalna}}
 		\label{fig:archGain}
 	\end{figure}
+	
+	Ostaje da se re"si pitanje prelaza bez udara. U slu"caju klasi"cnih kontrolera taj problem se elegatno re"sava uvo\dj enjem jednostavne modifikacije u originalni algoritam. U radu \cite{inicijalna} autor predla"ze formulisanje problema prelaza bez udara u formi optimizacionog problema. Za projektovani LQR "cije je upravljanje definisano kao $u = -\mathbf{K}\mathbf{x}$ treba da se minimizuje srednje kvadratno odstupanje po"cetnog stanja $\mathbf{x}$ LQR od stvarnog stanja sistema $\mathbf{x}^*$ u trenutku komutacije. Odnosno treba da se re"si slede\'ci optimizacioni problem:
+	\begin{equation}
+		\min_{\mathbf{x}} ||\mathbf{x} - \mathbf{x}^*||^2
+	\end{equation},
+	pod uslovom:
+	\begin{equation}
+		\mathbf{K}\mathbf{x} + u^* = 0
+	\end{equation},
+	gde je $u^*$ upravljanje u trenutku komutacije. U ovom zapisu problem se svodi na tra"zenje uslovnog minimuma primenom metode Lagra"zovih multiplikatora. Kao re"senje sistema se dobijaju slede'ce jedna"cine:
+	\begin{align}\label{eq:komutacija}
+		\lambda &= 2\frac{\mathbf{K}\mathbf{x}^*+u*}{\mathbf{K}\mathbf{K}^T} \\
+		\mathbf{x} &= \mathbf{x}^*-\frac{1}{2}\lambda\mathbf{K}^T
+	\end{align}.
+	
+	
+	
+	
 	
 	
 	
@@ -779,6 +816,7 @@
 		\bibitem{identifikacija}\emph{Identification of Dynamic System}, R. Isermann and M. Munchhof, Springer, 2011.
 		
 		\bibitem{mpc}\url{https://en.wikipedia.org/wiki/Model_predictive_control}
+		\bibitem{rk4}\url{https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods}
 		
 		\bibitem{CASADI}\url{https://web.casadi.org/}
 		

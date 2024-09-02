@@ -18,22 +18,19 @@ classdef MPC_swing_up < handle
         %Number of states:
         n_controls = 1;
         n_states = 5;
-        n_reference = 5;
+        n_reference = 2;
 
         % Weighting matricies
-        Qw = [(1/pi*180)^2, 0, 0, 0, 0; 
-               0, (1/2)^2, 0, 0, 0;
-               0, 0, (1/pi*180)^2, 0, 0;
-               0, 0, 0, (1/2)^2, 0 
-               0, 0, 0, 0, 1];
+        Qw = [(40/pi)^2, 0, 0, 0, 0; 
+               0, (1/10)^2, 0, 0, 0;
+               0, 0, (20/pi)^2, 0, 0;
+               0, 0, 0, (1/10)^2, 0 
+               0, 0, 0, 0, (1/4)^2];
         Rw = 1/36;
         Ow = [1, 0, 0, 0, 0; 0, 0, 1, 0, 0];
-        Qwobs = [(1/pi*180)^2, 0, 0, 0, 0; 
-               0, (1/2)^2, 0, 0, 0;
-               0, 0, (1/pi*180)^2, 0, 0;
-               0, 0, 0, (1/2)^2, 0 
-               0, 0, 0, 0, 1];
+        Qwobs = [(1/pi)^2*0, 0; 0 (1/pi)^2];
         gamma_control = 1;
+        gamma_states = 0;
         gamma_final = 10;
 
         % NLP setup
@@ -144,10 +141,10 @@ classdef MPC_swing_up < handle
             con_vctr = [con_vctr; zeros(obj.n_states*obj.N, 1)];
             for k = 1:obj.N
                 st = X(:,k);  con = U(:,k);
-                cost = cost+ ...
-                obj.norm(con, obj.Rw, obj.u_norm)*obj.gamma_control*obj.dt + ...
+                cost = cost +...
+                obj.norm(con, obj.Rw, obj.u_norm)*obj.gamma_control + ...
                 obj.norm(st, ...
-                obj.Qw, obj.x_norm)*obj.dt;
+                obj.Qw, obj.x_norm)*obj.gamma_states;
 
                 st_next = X(:,k+1);
                 
@@ -165,7 +162,7 @@ classdef MPC_swing_up < handle
             % N*dt is intoduced to make scales invariant to horizon length
             cost = cost + ...
                 obj.norm(obj.Ow*st-P(obj.n_states+1:end), ...
-                obj.Qwobs, obj.x_norm)*obj.gamma_final*obj.N*obj.dt; % final state
+                obj.Qwobs, obj.x_norm)*obj.gamma_final; % final state
 
             % make the decision variable one column  vector
             OPT_variables = [reshape(X,obj.n_states*(obj.N+1),1);
@@ -188,8 +185,8 @@ classdef MPC_swing_up < handle
             obj.args = struct;
             
             % equality constraints: 
-            obj.args.lbg(1:obj.n_states*(obj.N+1), 1) = 1e-5;  
-            obj.args.ubg(1:obj.n_states*(obj.N+1), 1) = 1e-5;
+            obj.args.lbg(1:obj.n_states*(obj.N+1), 1) = 1e-4;  
+            obj.args.ubg(1:obj.n_states*(obj.N+1), 1) = 1e-4;
             
             % state constraints
             obj.args.lbx(1:obj.n_states*(obj.N+1), 1) = -inf;  

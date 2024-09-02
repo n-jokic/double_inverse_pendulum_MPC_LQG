@@ -29,8 +29,12 @@ simulate_system(system_model, controller, x0, u0, state_reference, ...
 control_reference, disturbance, noise, t, M, ...
 u_limit, reference_cutoff_angle);
 
-disp('Steady state reached after: ');
+disp('Steady state for 3rd state reached after: ');
+idx = find(abs(states(:,3)) <= 3*pi/180,1);
 disp(find(abs(states(:,3)) <= 3*pi/180,1)*(t(2)-t(1)));
+
+disp('Steady state for 1st state reached after: ');
+disp(find(abs(states(idx-100:end,1)) <= 3*pi/180,1)*(t(2)-t(1)));
 
 end
 

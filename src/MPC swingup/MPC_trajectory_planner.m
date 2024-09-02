@@ -1,15 +1,30 @@
 %% MPC setup
 rk4_steps = 1;
 control_signal_rate = 0.001;
-N_horizon = 2000;
+N_horizon = 5000;
 
 mpc = MPC_swing_up([u_min, u_max], rk4_steps, ...
     control_signal_rate, N_horizon);
 
 %% 2 norm
 mpc.gamma_control = 1;
-mpc.gamma_final = .1;
-mpc.runMPC([0, 0, pi, 0, 0], [0, 0, 0, 0, 0]), mpc.plot_trajectories();
+moc.gamma_states = 5;
+mpc.gamma_final = 6000;
+
+u0 = randn(mpc.N*mpc.n_controls, 1)*5; 
+
+scale = [pi/2 0 0 0 0;
+         0 5 0 0 0;
+         0 0 pi/2 0 0;
+         0 0  0   5 0;
+         0 0 0    0 2
+         ];
+X0 = repmat(randn(1, mpc.n_states)*scale*2, 1,mpc.N+1)';
+mpc.x0  = [X0; u0];
+
+mpc.gamma_final = N_horizon/200;
+%%
+mpc.runMPC([0, 0, pi, 0, 0], [0, 0]), mpc.plot_trajectories();
 
 x_ref = mpc.x_mpc;
 u_ref = mpc.u_mpc;
@@ -20,10 +35,9 @@ if SAVE_TRAJECTORY
     save('MPC_trajectory_norm2', 'x_ref', 'u_ref');
 end
 %% 1 norm
-%mpc.gamma_control = 0.0;
-%mpc.gamma_final = .01;
+%mpc.gamma_control = 4;
+%mpc.gamma_final = .5;
 %mpc.u_norm = 1;
-%mpc.gamma_control = 0.05;
 %mpc.runMPC([0, 0, pi, 0, 0], [0, 0]), mpc.plot_trajectories();
 
 %x_ref = mpc.x_mpc;

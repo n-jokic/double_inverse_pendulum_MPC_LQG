@@ -20,7 +20,8 @@ for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
 
-    if abs(states_measured(i, 3)) < reference_cutoff_angle
+    if abs(states_measured(i, 3)) < reference_cutoff_angle && ...
+            abs(states_measured(i, 1)) < reference_cutoff_angle
         reached_cutoff = 1;
     end
     control_reference(i, :) = (1-reached_cutoff)*control_reference(i, :);

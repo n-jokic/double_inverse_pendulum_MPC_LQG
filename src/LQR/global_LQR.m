@@ -14,6 +14,7 @@ alpha_measured = alpha_measured - 2*pi*(alpha_measured>pi);
 
 if(abs(alpha_measured) > 18*pi/180) % swing up
     turn_off_controller = 1;
+   
 end
 
 control = (1-turn_off_controller)*controller*(reference - state_measurement);
