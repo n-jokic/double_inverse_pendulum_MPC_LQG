@@ -33,8 +33,8 @@ disp('Steady state for 3rd state reached after: ');
 idx = find(abs(states(:,3)) <= 3*pi/180,1);
 disp(find(abs(states(:,3)) <= 3*pi/180,1)*(t(2)-t(1)));
 
-disp('Steady state for 1st state reached after: ');
-disp(find(abs(states(idx-100:end,1)) <= 3*pi/180,1)*(t(2)-t(1)));
+disp('Control 2norm: ');
+disp(sqrt(um(control.^2)));
 
 end
 

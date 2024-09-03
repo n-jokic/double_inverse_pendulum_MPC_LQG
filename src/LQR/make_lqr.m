@@ -10,12 +10,14 @@ continious_system = ss(A,B,C,D);
 %discrete_system = c2d(continious_system, dt);
 
 
-Q = [(1/0.1/pi)^2 0 0 0 0;
-     0 0 0 0 0;
-     0 0 (1/0.1/pi)^2 0 0;
-     0 0 0 0 0;
-     0 0 0 0 0
-     ];
+Q = [1/pi 0 0 0 0;
+     0 1/10 0 0 0;
+     0 0 1/pi 0 0;
+     0 0 0 1/10 0;
+     0 0 0 0 1/4
+     ]*10;
+
+R = 1/6;
 
 N = [1;
     0;
@@ -25,7 +27,7 @@ N = [1;
 
 R = 1/(0.1)^2;
 
-K = lqr(A, B,Q,R, N);
+K = lqr(A, B, Q, R, N);
 
 end
 

@@ -27,9 +27,7 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\beta [deg]');
 xlabel('t [s]');
 grid on;
-lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
-    ['x_{' num2str(k) ', ref}']);
-set(lgd,'Location','best');
+
 
 
 k = 2;
@@ -43,9 +41,6 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\beta} [deg/s]');
 xlabel('t [s]');
 grid on;
-lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
-    ['x_{' num2str(k) ', ref}']);
-set(lgd,'Location','best');
 
 
 k = 3;
@@ -59,9 +54,7 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('\alpha [deg]');
 xlabel('t [s]');
 grid on;
-lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
-    ['x_{' num2str(k) ', ref}']);
-set(lgd,'Location','best');
+
 
 
 k = 4;
@@ -74,9 +67,7 @@ plot(t, state_reference(1:end, k)*radian_to_degrees, 'k--');
 ylabel('a_{\alpha} [deg/s]');
 xlabel('t [s]');
 grid on;
-lgd=legend(['x_' num2str(k) '(t)' '+ w(t)'], ['x_' num2str(k) '(t)'], ...
-    ['x_{' num2str(k) ', ref}']);
-set(lgd,'Location','best');
+
 
 
 k = 5;

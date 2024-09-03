@@ -20,9 +20,10 @@ for i = 2 : length(t)
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
 
-    if abs(states_measured(i, 3)) < reference_cutoff_angle && ...
-            abs(states_measured(i, 1)) < reference_cutoff_angle
+    if abs(states_measured(i, 3)) < reference_cutoff_angle ...
+            && reached_cutoff~=1
         reached_cutoff = 1;
+        display(['Controlled turned on: ' num2str(i*dt)]);
     end
     control_reference(i, :) = (1-reached_cutoff)*control_reference(i, :);
     state_reference(i, :) = (1-reached_cutoff)*state_reference(i, :);
@@ -35,6 +36,7 @@ for i = 2 : length(t)
     states(i+1, :) = rk4_integration(states(i, :)'+disturbance(i, :)', ...
         control(i, :), system_dynamics, dt, M);
 end
+
 
 end
 

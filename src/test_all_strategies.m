@@ -5,15 +5,15 @@ system_model = @inverted_pendulum;
 u_limit = [u_min, u_max];
 t = 0 : dt : 3.5;
 t1 = 0; 
-t2 = 2.3;
+t2 = 2.5;
 M = 2;
-reference_cutoff_angle = 10/180*pi; %angle when reference gets set to 0
+reference_cutoff_angle = 16/180*pi; %angle when reference gets set to 0
 
 disturbance = zeros(length(t), length(x0));
 disturbance(t==2.5, 3) = 10/180*pi;
 disturbance(t==3, 3) = -10/180*pi;
 
-noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2]*0;
+noise = [0.001/10, 0.005, 0.001/10, 0.005, 0.001/2];
 
 
 %% MPC_L2 + gain_scheduling

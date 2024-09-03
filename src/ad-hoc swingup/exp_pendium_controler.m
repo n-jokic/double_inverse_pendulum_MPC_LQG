@@ -12,7 +12,7 @@ state_reference = zeros(length(t), length(x0));
 control_reference = zeros(length(t), length(u0));
 u_limit = [u_min, u_max];
 
-u0 = 0;
+u0 = 5;
 disturbance = zeros(length(t), length(x0)); 
 noise = [0.01, 0.01, 0.01, 0.01, 0.01]*0;
 %% Simulation:

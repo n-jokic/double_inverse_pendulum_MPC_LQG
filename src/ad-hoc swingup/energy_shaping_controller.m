@@ -4,7 +4,7 @@ measurement_model = @inverted_pendulum_measurement;
 
 
 t = 0:dt:2;
-M = 2;
+M = 1;
 
 reference_cutoff_angle = 0;
 x0 = [0.0; 0;pi; 0; 0];
@@ -12,7 +12,7 @@ state_reference = zeros(length(t), length(x0));
 control_reference = zeros(length(t), length(u0));
 u_limit = [u_min, u_max];
 
-u0 = 0;
+u0 = 5;
 disturbance = zeros(length(t), length(x0)); 
 noise = [0.01, 0.01, 0.01, 0.01, 0.01]*0;
 %% Simulation:
