@@ -1,7 +1,7 @@
 function [states, control, states_measured, state_reference, ...
     control_reference] = test_controller(controller, ...
     system_model, trajectory_file, u_limit, ...
-    t, M, reference_cutoff_angle, disturbance, noise)
+    t, M, reference_cutoff_angle, disturbance, noise, controller_cutoff)
 
 
 %Simulation setup:
@@ -27,14 +27,14 @@ u0 = 0;
 [states, control, states_measured, state_reference, control_reference] = ...
 simulate_system(system_model, controller, x0, u0, state_reference, ...
 control_reference, disturbance, noise, t, M, ...
-u_limit, reference_cutoff_angle);
+u_limit, reference_cutoff_angle, controller_cutoff);
 
 disp('Steady state for 3rd state reached after: ');
 idx = find(abs(states(:,3)) <= 3*pi/180,1);
 disp(find(abs(states(:,3)) <= 3*pi/180,1)*(t(2)-t(1)));
 
 disp('Control 2norm: ');
-disp(sqrt(um(control.^2)));
+disp(sqrt(sum(control.^2)));
 
 end
 

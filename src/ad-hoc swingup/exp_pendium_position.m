@@ -3,8 +3,8 @@ function u = exp_pendium_position(x, r)
   
     
     
-    n = 3.2 ; % 1.65
-    kv = 0.12; % 0.665
+    n = 3 ; % 1.65
+    kv = 0.2; % 0.665
     
     u = kv*abs(x(3)^n);
     
