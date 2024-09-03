@@ -4,7 +4,7 @@ function u = energy_control(x, r)
     load model_parameters.mat J0 J2 Lcm2 Le1 m2 g 
     
     
-    kv = 0.68*6;
+    kv = 0.68*12;
     E0 = 0;
     
     l2 = Lcm2; % Distance from axis of rotation to centre of mass of the pendulum[m]

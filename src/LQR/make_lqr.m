@@ -26,7 +26,5 @@ N = [1;
     0];
 
 K = lqr(A, B, Q, R);
-disp(K)
-
 end
 

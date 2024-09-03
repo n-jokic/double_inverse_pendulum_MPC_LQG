@@ -4,7 +4,7 @@ system_model = @inverted_pendulum;
 measurement_model = @inverted_pendulum_measurement;
 
 
-t = 0:dt:3;
+t = 0:dt:2;
 M = 1;
 
 reference_cutoff_angle = 0;
@@ -26,6 +26,7 @@ u_limit, reference_cutoff_angle, controller_cutoff);
 %plot_simulation_result(x, u, disturbance, t, [-5; 5]);
 x_ref = states;
 u_ref = control;
+disp(min(x_ref(:, 3))/pi*180)
 
 if SAVE_TRAJECTORY
 loc = fullfile(cd, 'ad-hoc swingup');
