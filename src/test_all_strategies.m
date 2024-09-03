@@ -5,8 +5,8 @@ system_model = @inverted_pendulum;
 u_limit = [u_min, u_max];
 t = 0 : dt : 3;
 t1 = 0; 
-t2 = 3;
-M = 2;
+t2 = 2;
+M = 4;
 reference_cutoff_angle = 16/180*pi; %angle when reference gets set to 0
 controller_cutoff = inf;
 

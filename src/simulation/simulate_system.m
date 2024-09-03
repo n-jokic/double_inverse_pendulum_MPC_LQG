@@ -16,9 +16,9 @@ states(1, :) = x0;
 states_measured(1, :) = x0;
 
 reached_cutoff = 0;
-cont_off = 0;
 
 for i = 2 : length(t)
+    cont_off = 0;
     noise_sample = mvnrnd([0; 0; 0; 0; 0], sigma_noise)';
     states_measured(i, :) = states(i, :)'+noise_sample;
 
@@ -28,10 +28,8 @@ for i = 2 : length(t)
         display(['Controlled turned on: ' num2str(i*dt)]);
     end
 
-    if abs(states_measured(i, 3)) >  controller_cutoff 
+    if abs(states_measured(i, 3)) >  controller_cutoff
         cont_off = 1;
-        
-
     end
 
     control_reference(i, :) = (1-reached_cutoff)*control_reference(i, :);
