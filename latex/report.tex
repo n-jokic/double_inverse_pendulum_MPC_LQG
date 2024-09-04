@@ -162,7 +162,7 @@
 	
 	U radu \cite{inicijalna} se navodi da do trenutka kada je rad napisan, problem uspravljanja FP nije rešavan metodama optimalnog upravljanja. Korišćenjem ovih metoda, problem se elegantno formuliše kao minimizacija odgovarajućeg troška uz poštovanje određenih ograničenja. Primenom ove tehnike, autor istražuje savremene tehnike upravljanja, njihovu primenljivost u sličnim problemima i razvija odgovarajuću strategiju upravljanja za ovu klasu uređaja. Pored primene optimalnog upravljanja razmatrane su i ad-hoc strategije koje se oslanjaju na principe izvedene iz fizike sistema. Balansiranje klatna oko njegovog nestabilnog ravnotežnog stanja se obavlja korišćenjem LQG. Primena LQG podrazumeva rešavanje problema kvadratnog programiranja nad linearizovnim sistemom i primenu Kalmanovog filtra za opservaciju stanja sistema. U sekciji (\textbf{\ref{sec:LQR}}) se predstavlja teorija LQR upravljanja i uvodi se koncept \emph{feedforward} dejstva za potrebe pra\'cenja reference.\\
 	
-	Cilj autora rada \cite{inicijalna} je da ispita performanse algoritama za uspravljanje klatna. Svi ispitani algoritmi su u"speno primenjeni u simulaciji, kao i na realnom sistemu. Cilj ovog rada je da reprodukuje uspe"snost navedenih algoritama, kao i da uvede inovaciju kroz primenu prediktivnog upravljanja na bazi modela. U sekciji (\textbf{\ref{sec:andhoc}}) se predstavljaju na"cini generisanja trajektorije. Svi algoritmi su uspe"sno reprodukovali pona"sanje iz originalnog rada.\\
+	Cilj autora rada \cite{inicijalna} je da ispita performanse algoritama za uspravljanje klatna. Svi ispitani algoritmi su uspešno primenjeni u simulaciji, kao i na realnom sistemu. Cilj ovog rada je da reprodukuje uspe"snost navedenih algoritama, kao i da uvede inovaciju kroz primenu prediktivnog upravljanja na bazi modela. U sekciji (\textbf{\ref{sec:andhoc}}) se predstavljaju na"cini generisanja trajektorije. Svi algoritmi su uspe"sno reprodukovali pona"sanje iz originalnog rada.\\
 	
 	Rezultati ovog rada su prikazani u sekciji (\textbf{\ref{sec:comp}}). Uvedene su 3 metrike za potrebe pore\dj enja performansi algoritama za uspravljanje klatna. Pored verifikacije uspe"snosti algoritama sprovedena je kratka analiza robustnosti kontrolera na poreme\'caje, kao i robustnost generisanih upravljanja na gre"ske u modelu. \\
 	
@@ -286,7 +286,7 @@
 		\label{eq:nonModel}
 	\end{equation}\\
 	
-	U radu \cite{inicijalna} za identifikaciju parametara korišćena je modifikovana metoda najmanjih kvadrata. Autor navodi da zbog prisutnih nelinearnosti primena klasi"cne metode najmanjih kvadrata nije dovoljno pouzdana. Metoda najmanjih kvadrata podrazumeva da se za dati sistem u prostoru stanja $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}, \mathbf{u}, \vect{\theta}),~ \mathbf{y} = \mathbf{h}(\mathbf{x})$ odrede nepoznati parametri $\vect{\theta}$ minimizacijom kvadratne funkcije cene $J_N(\vect{\theta}) = ||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$. Modifikacija koju autor uvodi podrazumeva uvo\dj enje apriornog znanja o referentnoj vrednosti parametara $\vect{\overline{\theta}}$ i standardnoj devijaciji $\vect{\sigma_{\vect{\theta}}}$. Kona"cno funkcija cene poprima slede\'ci oblik: $J_N(\vect{\theta}) = \vect{\sigma_{\vect{\theta}}}^{-1}||\vect{\theta}-\vect{\overline{\theta}}||^2_2 +  \vect{\sigma_{\vect{y}}}^{-1}||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$, primenom funkije cene ovog oblika se zapravo primenjuje Bejzova metoda najmanjih kvadrata. Eksperiment za potrebe identifikacije parametara je sproveden nad aparaturom prikazanom na slici (Sl. \ref{fig:eksper}). Rezultati su predstavljeni u  tabeli \ref{tab:tab1}.
+	U radu \cite{inicijalna} za identifikaciju parametara korišćena je modifikovana metoda najmanjih kvadrata. Autor navodi da zbog prisutnih nelinearnosti primena klasi"cne metode najmanjih kvadrata nije dovoljno pouzdana. Metoda najmanjih kvadrata podrazumeva da se za dati sistem u prostoru stanja $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}, \mathbf{u}, \vect{\theta}),~ \mathbf{y} = \mathbf{h}(\mathbf{x})$ odrede nepoznati parametri $\vect{\theta}$ minimizacijom kvadratne funkcije cene $J_N(\vect{\theta}) = ||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$. Modifikacija koju autor uvodi podrazumeva uvo\dj enje apriornog znanja o referentnoj vrednosti parametara $\vect{\overline{\theta}}$ i standardnoj devijaciji $\vect{\sigma_{\vect{\theta}}}$. Kona"cno funkcija cene poprima slede\'ci oblik: $J_N(\vect{\theta}) = \vect{\sigma_{\vect{\theta}}}^{-1}||\vect{\theta}-\vect{\overline{\theta}}||^2_2 +  \vect{\sigma_{\vect{y}}}^{-1}||\mathbf{y}-\hat{\mathbf{y}}(\vect{\theta})||^2_2$, primenom funkcije cene ovog oblika se zapravo primenjuje Bejzova metoda najmanjih kvadrata. Eksperiment za potrebe identifikacije parametara je sproveden nad aparaturom prikazanom na slici (Sl. \ref{fig:eksper}). Rezultati su predstavljeni u  tabeli \ref{tab:tab1}.
 	
 	\begin{table}[ht]
 		\centering
@@ -553,7 +553,7 @@
 
 	\subsection{Generisanje trajektorije}\label{sec:gen_traj}
 	
-	Ovo poglavlje istražuje kako pronaći optimalan ulaz za dinamički sistem, omogućavajući mu da sledi željenu putanju u prostoru stanja. Ova putanja treba da bude u skladu sa zadanim ograničenjima i optimizuje zadatu veličinu. Iako se različite strategije mogu koristiti za projektovanje putanja, fokus je stavljen na optimalno upravljanje. Ova tehnika pruža jasan okvir za pronalaženje rešenja za probleme podložne ograničenjima i ciljevima optimizacije. Pored optimalnog generisanja trajektorije, implementirane su i ad hoc metode za uspravljanje klatna kao alternativno i jednostavno rešenje. 
+	Ovo poglavlje istražuje kako pronaći optimalan ulaz za dinamički sistem, omogućavajući mu da sledi željenu putanju u prostoru stanja. Ova putanja treba da bude u skladu sa zadatim ograničenjima i optimizuje zadatu veličinu. Iako se različite strategije mogu koristiti za projektovanje putanja, fokus je stavljen na optimalno upravljanje. Ova tehnika pruža jasan okvir za pronalaženje rešenja za probleme podložne ograničenjima i ciljevima optimizacije. Pored optimalnog generisanja trajektorije, implementirane su i ad hoc metode za uspravljanje klatna kao alternativno i jednostavno rešenje. 
 	
 	\subsubsection{Ad hoc strategije}
 	\label{sec:andhoc}
@@ -572,7 +572,7 @@
 	
 	Važno je napomenuti da je ovaj zakon upravljanja projektovan specifično za sistem FP, stoga nije vrlo opšte primenljiv. Takođe, ograničen je na situacije gde nivo energije ciljnog stanja nije degenerisan. Iako će kontroler dovesti sistem do stanja sa određenom energijom, ako postoji više konfiguracija sa istom energijom, nije moguće izabrati između njih. Ovo je slučaj kod FP, gde energija sistema ne zavisi od ugla horizontalne ruke $\alpha$. Dakle, ovom tehnikom nema kontrole nad ovom varijablom tokom uspravljanja. \\
 	
-	Zakon upravljanja definisan u jednačini (\ref{eq:en_control}) zahteva izračunavanje energije sistema. Modifikovana verzija kontrolera predložena je u \cite{energy_c} koja uzima u obzir samo varijable prostora stanja. Ovaj zakon upravljanja poznate je kao 
+	Zakon upravljanja definisan u jednačini (\ref{eq:en_control}) zahteva izračunavanje energije sistema. Modifikovana verzija kontrolera predložena je u \cite{energy_c} koja uzima u obzir samo varijable prostora stanja. Ovaj zakon upravljanja poznat je kao 
 	\textit{exponentiation of the pendulum position} i glasi:\\
 	
 	\begin{equation}
@@ -680,7 +680,7 @@
 	
 	Nakon generisanja referentnih trajektorije potrebno je projektovati kontroler čiji je zadatak da u što većoj meri isprati željenu trajektoriju i kontroler koji će održavati sistem u željenom, gornjem položaja. \\
 	
-	Linearni kontroleri su validni samo u onom regionu gde je izvršena linearizacija sistema, a kako je zadatak upravlanje nelineranim sistemom potrebno je napraviti ansambl kontrolera. \\
+	Linearni kontroleri su validni samo u onom regionu gde je izvršena linearizacija sistema, a kako je zadatak upravljanje nelineranim sistemom potrebno je napraviti ansambl kontrolera. \\
 	
 	U radu \cite{inicijalna} su se bavili projektovanjem LQG kontrolera. Kalman filter je optimalan za procenu stanja u linearnim sistemima, ali kada se primeni na nelinearne sisteme, može doći do netačnih procena stanja zbog odstupanja između stvarne nelinearnosti sistema i linearnog modela koji se koristi u Kalman filtru. Iz ovog razloga, u ovom radu smo se zadržali na korišćenju LQR kontrolera. \\
 	
@@ -730,7 +730,7 @@
 	
 	Prelazak između kontrolera vrši se u dva različita režima rada: \\
 	
-	1. Kontrola za podizanje sistema primenjuje se direktno na uređaj. Samo linearni kontroler oko krajnje tačke je aktivan (globalni LQR kontroler). Tranzicija između režima uspravljanja sistema i režima ravnoteže oko uspravnog poožaja se dešava kada se ugao penduluma dovoljno približi nultom položaju ($\beta$ < 18$^\circ$). Ovaj pristup se koristi kada nema referentne putanje, i podizanje sistema se izvodi u zatvorenoj petlji, na primer sa Ad hoc strategijama opisanim u \ref{sec:andhoc}. \\
+	1. Kontrola za podizanje sistema primenjuje se direktno na uređaj. Samo linearni kontroler oko krajnje tačke je aktivan (globalni LQR kontroler). Tranzicija između režima uspravljanja sistema i režima ravnoteže oko uspravnog položaja se dešava kada se ugao penduluma dovoljno približi nultom položaju ($\beta$ < 18$^\circ$). Ovaj pristup se koristi kada nema referentne putanje, i podizanje sistema se izvodi u zatvorenoj petlji, na primer sa Ad hoc strategijama opisanim u \ref{sec:andhoc}. \\
 	
 	2. Referentna kontrola se primenjuje na uređaj, koji zauzvrat ima zatvoreni skup linearnih kontrolera koji stabilizuju razliku između izvedene putanje i referentne putanje. Ovo se naziva Gain Scheduling controller.\\
 	
