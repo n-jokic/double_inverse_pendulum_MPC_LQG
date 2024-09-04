@@ -6,9 +6,9 @@
 
 
 \usepackage[T1]{fontenc} 
-\usepackage{biblatex} % bibliography
+%\usepackage[backend=biber,style=numeric,sortcites,sorting=nty,backref,natbib,hyperref]{biblatex} % bibliography
 
-\addbibresource{citation.bib} % file with references
+%\addbibresource{citation.bib} % file with references
 
 
 \usepackage{comment}
@@ -105,6 +105,8 @@
 \usepackage{siunitx}
 
 \usepackage{scalerel}
+
+
 
 
 
@@ -586,7 +588,7 @@
 		u = \operatorname{sat}(k_1 (\dot\alpha + k_2 \cos(\beta) \dot\beta)).
 	\end{equation}
 	
-	\subsubsection{Optimalno upravljanje}
+	\subsubsection{Optimalno upravljanje}\label{sec:OU}
 	Optimalna kontrola se bavi problemom određivanja ulaza dinamičkog sistema koji optimizuju, tj. minimiziraju ili maksimiziraju, određeni indeks performansi. Sa odgovarajućim izborom funkcije troška, mogu se odrediti trajektorije i zakoni upravljanja tako da zadovolje zahteve dizajna.\\
 	
 	U ovom radu, koristili smo model prediktivnog upravljanja (engl. \emph{Model Predictive Control}, MPC) kao pristup za optimalnu kontrolu. \\
@@ -984,13 +986,22 @@
 		\item Primena upravljanja na bazi MPC rezultuje najmanjim utro"skom energije.
 		\item \emph{Energy control} je ujedno i najsporije i najskuplje upravljanje.
 		\item \emph{Energy shaping} najbr"ze dosti"ze uspravni polo"zaj.
-		\item Ako su gre"ske modelovanja nisu zanemarljive bolje je primeniti \emph{gain scheduling}, u proseku je br"zi i tro"si manje energije.
+		\item Ako su gre"ske modelovanja nisu zanemarljive bolje performanse posti"ze \emph{gain scheduling}, u proseku je br"zi i tro"si manje energije.
 	\end{itemize}
 	
 	
 	\clearpage
 	\section{Zaklju"cak}\label{sec:zakljucak}
 	
+	Na osnovu rezultata iz sekcije (\textbf{\ref{sec:tab}}) mo"ze se re\'ci da  izbor tipa kontrolera nije uvek o"cigledan. \emph{Gain scheduling} pristup rezultuje boljim performansama u slu"caju ve\'cih gre"saka u modelovanju, ali razlike u performansama su dovoljno male da mo"zda nije opravdano koristiti slo"zeniji kontroler. Primena 
+	\emph{gain scheduling} zahteva projektovanje N puta vi"se kontrolera. Me\dj utim, i pored ve\'ce slo"zenosti ovaj prostup je jednostavniji za implementaciju od ve\'cine nelinearnih kontrolera i kao takav mo"ze predstavljati dobar kompromis izme\dj u slo"zenosti i performansi. "Sto se ti"ce strategija za uspravljanje klatna, pokazano je da upravljanje generisano primenom MPC tro"si ubedljivo najmanje energije. Ovaj rezultat je u skladu sa o"cekivanjima zbog oblika funkcije cene iz sekcije (\textbf{\ref{sec:OU}}). Ako se u obzir uzmu svi faktori kao dobar kompromis se name\'ce pristup na bazi \emph{energy shaping}, daleko je jednostavniji od MPC i rezultuje brzim odzivom uz prihvatljiv utro"sak energije.  \\
+	
+	Ovaj rad ima nekoliko nedostataka i ovde \'ce biti navedeni. Za razliku od autora rada \cite{inicijalna} ne vr"si se ispitivanje L1 norme. Kao "sto je re"ceno u sekciji (\textbf{\ref{sec:OU}}) razlog za to je problem sa konvergencijom. "Cak i u slu"cajevima kad algoritam konvergira rezultuju\'ce trajektorije su bile prakti"cno identi"cne. Zbog ovog manjka pouzdanosti je doneta odluka da se L1 norma u potpunosti elimini"se. Nije implementiran Kalmanov filtar zato "sto su u simulaciji sva stanja opservabilna. Me\dj utim, u radu autor navodi da je samo 3 od 5 stanja direktno merljivo, u toj situaciji je neophodno koristiti Kalmanov filtar. Mada primena klasi"cnog Kalmanovog nije u potpunosti opravdana zbog nelinearne prirode sistema. Za nelinearne sisteme ima vi"se smisla koristiti filtre kao "sto su pro"sireni Kalmanov filtar (eng. \emph{extended Kalman filter}) i neosetljivi Kalmanov filtar (eng. \emph{Unscented Kalman filter}). Pored navedenog jo"s jedan nedostatak je manjak detaljne analize robustnosti. Ispitivanje je sprovedeno tako "sto su svi parametri uve\'canji za $5\sigma$. Rigoroznije ispitivanje podrazumeva pretragu u prostoru parametara modela, kako bi prona"sli najgoru kombinaciju parametara. Ova pretraga se mo"ze znatno redukovati ukoliko se sprovede analiza simboli"cke funkcije prenosa linearizovanog sistema u gornjem polo"zaju. \\
+	
+	Prostor za budu\'ca istra"zivanja postoji. Mo"ze se sprovesti komparativna analiza brzine konvergencije i stabilnosti MPC u zavisnosti od tipa implementacije. U ovom radu je kori"s\'cena samo \emph{multiple shooting} metoda. O"cigledna nadogradnja na ovaj rad je primena MPC za stabilizaciju u gornjem polo"zaju uz primenu dovoljno brzog algoritma za rad u realnom vremenu. Ovaj pristup bi zahtevao kori"s\'cenje jo"s efikasnije biblioteke kao "sto je ACADOS \cite{acados}. ACADOS za razliku od CASADI stavlja manji akcenat na ta"cnost re"senja primenom br"zih solvera koji ne pronalaze nu"zno najbolje re"senje. Pored brzine prednost ACADOS-a je to "sto se implementirani kod lako spu"sta na mikrokontroler. U ovom radu su kori"s\'cene tipi"cne strategije u vidu nelinearnog upravljanja i MPC. Zanimljiva modifikacija ovog rada bi podrazumevala uzimanje u obzir malo egzoti"cnijih strategija kao "sto su u"cenje podsticanjem (eng. \emph{reinforced learning}) i primena genetskog algoritma (eng. \emph{genetic algorithm}) za optimizaciju upravljanja. 
+	 
+	
+	 
 	
 	\newpage
 	
@@ -1009,13 +1020,15 @@
 		516–521. IEEE, 2002
 		\bibitem{identifikacija}\emph{Identification of Dynamic System}, R. Isermann and M. Munchhof, Springer, 2011.
 		
-		\bibitem{mpc}\url{https://en.wikipedia.org/wiki/Model_predictive_control}
-		\bibitem{rk4}\url{https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods}
+		\bibitem{mpc} \emph{https://en.wikipedia.org/wiki/Model\_predictive\_control}
+		\bibitem{rk4}\emph{https://en.wikipedia.org/wiki/Runge\%E2\%80\%93Kutta\_methods}
 		
-		\bibitem{CASADI}\url{https://web.casadi.org/}
+		\bibitem{CASADI}\emph{https://web.casadi.org/}
 		
 		\bibitem{multiple_shooting}\emph{Nonlinear Model Predictive Control Using Multiple Shooting Combined with 
 		Collocation on Finite Elements}, Jasem Tamimi and Pu Li.
+		
+		\bibitem{acados} \emph{https://github.com/acados/acados}
 		
 	\end{thebibliography}
 \end{document}
