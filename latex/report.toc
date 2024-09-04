@@ -18,6 +18,6 @@
 \contentsline {section}{\numberline {3}Komparativna analiza algoritama za uspravljanje klatna}{17}{}%
 \contentsline {subsection}{\numberline {3.1}Diskusija}{17}{}%
 \contentsline {subsection}{\numberline {3.2}Rezultati simulacije}{18}{}%
-\contentsline {subsubsection}{\numberline {3.2.1}Stabilizacija u gornjem položaju}{22}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Potiskivanje poreme\'caja u gornjem polo"zaju}{22}{}%
 \contentsline {subsubsection}{\numberline {3.2.2}Tabelarni prikaz rezultata simulacije}{23}{}%
 \contentsline {section}{\numberline {4}Zaklju"cak}{24}{}%

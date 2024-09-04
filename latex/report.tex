@@ -903,7 +903,23 @@
 	\clearpage
 	
 	
-	\subsubsection{Stabilizacija u gornjem položaju} \label{sec:por}
+	\subsubsection{Potiskivanje poreme\'caja u gornjem polo"zaju} \label{sec:por}
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.52\linewidth]{slike/Control_dist.eps}
+		\caption{Upravlja"cki tokom potiskivanja poreme\'caja}
+		\label{fig:cnrl_dist}
+	\end{figure}
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=.86\linewidth]{slike/States_dist.eps}
+		\caption{Stanja sistema  tokom potiskivanja poreme\'caja}
+		\label{fig:traj_dist}
+	\end{figure}
+	
+	Projektovani LQR kontroler uspe"sno potiskuje poreme\'caj velike amplitude u uspravnom polo"zaju. Upravljanje je za"sumljeno zbog prisustva mernog "suma. Na osnovu slike (Slika \ref{fig:traj_dist}) mo"ze se primetiti da kontroler uspe"sno vrati sva stanja u koordinatni po"cetak osim ugla $\alpha$. Razlog za ovo pona"sanje je odsustvo uticaja ugla $\alpha$ na stabilnost u gornjem polo"zaju, odnosno ako nema potrebe menjati ugao $\beta$ ugao $\alpha$ mo"ze imati proizvoljnu vrednost.
 	
 	
 	\clearpage
