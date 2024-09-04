@@ -142,7 +142,7 @@
 		Ivona Dučić 3067/2023\\[1.5cm]		
 		\emph{Mentor:}\\
 		doc. dr Aleksandra Krstić\\[0.1cm]									
-		{\large Februar 2024}\\[2cm]
+		{\large Avgust 2024}\\[2cm]
 	\end{titlepage}
 	\tableofcontents
 	\newpage
@@ -184,7 +184,7 @@
 	
 	Modeli su ključni elementi u projektovanju kontrolera jer omogućavaju simulaciju sistema i testiranje kontrolera u preliminarnoj fazi, u offline režimu. U slučaju korišćenja nelinearnih MPC kontrolera, zahteva se da model bude ugradjen u sistem.  \\
 	
-	U zavisnosti od pristupa koji se koristi, za dizajn kontrolera potrebni su različiti tipovi modela. Pristupi koji se primenjuju za podizanje klatna iz donjeg u gornji položaj, kao što su ad hoc i optimalno upravljanje zahtevaju nelinearne modele, jer sistem prati putanju u prostoru stanja koja prolazi kroz različite regione sa različitom dinamikom. S druge strane, održavanje klatna u gornjem položaju zahteva samo kontroler koji može raditi nekoj okolini gorenjg poloz"aja, te je za postizanje ovog cilja potreban samo linearni model.  \\
+	U zavisnosti od pristupa koji se koristi, za dizajn kontrolera potrebni su različiti tipovi modela. Pristupi koji se primenjuju za podizanje klatna iz donjeg u gornji položaj, kao što su ad hoc i optimalno upravljanje zahtevaju nelinearne modele, jer sistem prati putanju u prostoru stanja koja prolazi kroz različite regione sa različitom dinamikom. S druge strane, održavanje klatna u gornjem položaju zahteva samo kontroler koji može raditi u nekoj okolini gornjeg položaja, te je za postizanje ovog cilja potreban samo linearni model.  \\
 	
 	Linearni modeli su mogu dobiti na dva načina: Jakobijan linearnizacijom nelinearnog modela u okolini želeljenog ravnotežnog stanja ili tehnikama identifikacije, gde se parametri linearnog modela procenjuju iz ekseprimenata. U otvorenoj sprezi, gornji položaj je nestabilan, i ako se primeni mala smetnja na ulazu, izlazni signal će rasti bez ograničenja. Da bi se izbegao ovaj problem, potrebno je prikupiti podatke u slučaju kada se na sistem primeni upravljanje sa stabilnim kontrolerom.  Oblast identifikacije je detaljno proučavana krajem 1960-ih i početkom 1970-ih  \cite{identifikacija}. Glavni izazov je bio kako ukloniti šum koji se kontaminira sa ulazom i izlazom sistema.  \\
 	
@@ -263,7 +263,7 @@
 	
 	
 	Pri modelovanju i odredjivanju parametara sistema
-	zanemarene su dinamičke karakteristike sistema: ne-elektične disipativne sile modelovane su kao viskozno trenje proporcionalnoj ugaonoj brzini zglobova, spoj između tela smatra se savršenim, uticaj, promena električnih karakteristika usled promene temperature aktuatora, zanemarivanje kapaciteta i induktivnosti žica raspodelejnih u prostoru i mehanički delovi su smatrani potpuno krutim.\\
+	zanemarene su dinamičke karakteristike sistema: ne-elektične disipativne sile modelovane su kao viskozno trenje proporcionalnoj ugaonoj brzini zglobova, spoj između tela smatra se savršenim, promena električnih karakteristika usled promene temperature aktuatora, zanemarivanje kapaciteta i induktivnosti žica raspodeljenih u prostoru i mehanički delovi su smatrani potpuno krutim.\\
 	
 	
 	\newpage
@@ -321,7 +321,7 @@
 		\vect{x_{k+1}} = \vect{x_{k}} + \Delta t \vect{f}(\vect{x_k}, \vect{u_k}).
 	\end{equation}.
 	
-	Me\dj utim, primena Ojlerove metode nije adekvatna za ovaj sistem usled velikih numeri"ckih gre"saka i nestabilnosti rezultuje\'ceg modela. Dodatnim koraka diskretizacije $\Delta t$ je mogu\'ce stabilizovati Ojlerovu metodu, ali to nije usvojeno kao prihvatljivo re"senje.\\
+	Me\dj utim, primena Ojlerove metode nije adekvatna za ovaj sistem usled velikih numeri"ckih gre"saka i nestabilnosti rezultuju\'ceg modela. Dodatnim koraka diskretizacije $\Delta t$ je mogu\'ce stabilizovati Ojlerovu metodu, ali to nije usvojeno kao prihvatljivo re"senje.\\
 	
 	Problem nestabilnog modela je re"sen primenom Runge-Kuta 4 (eng. \textit{Runge-Kutta}) metode numeri"cke integracije, dalje u tekstu RK4. Primenom RK4 integracija se vr"si na slede\'ci na"cin: 
 	\begin{align} \label{eq:RK4}
@@ -540,13 +540,13 @@
 	
 	\section{Projektovanje sistema upravljanja}
 	
-	Projektovanje sistema upravaljanja se sastoji iz dva dela: generisanje željene trajektorije i projektovanje kontrolera koji treba da isprati željenu trajektoriju i održava sistem u gornjem položaju. \\
+	Projektovanje sistema upravljanja se sastoji iz dva dela: generisanje željene trajektorije i projektovanje kontrolera koji treba da isprati željenu trajektoriju i održava sistem u gornjem položaju. \\
 	
 	Često je korisno dizajnirati trajektorije van mreže, tj. definisati putanju u prostoru stanja koju sistem treba da izvede unapred. U takvoj situaciji nismo ograničeni vremenom ili računski potrebnom snagom da se izvrše proračuni tokom samog procesa, što je posebno korisno kod složenih sistema sa brzom dinamikom. Putanje se dizajniraju koristeći model sistema, analizirajući njegov odgovor na dostupne ulaze. Ova strategija se široko koristi u robotici, gde postoji potreba za planiranjem kretanja mobilnih robota u ograničenim prostorima \cite{inicijalna}. \\
 	
 	Jedan od pristupa za generisanje trajektorije je optimalno upravljanje,  koje se bavi problemom određivanja ulaza dinamičkog sistema koji opitmizuje (maksimizuje ili minimizuje) odredjenu funkciju troška koja govori o performansama sistema. Sa odgovrajućom funkcijom troška mogu se odrediti putanja i zakon upravljanja koji zadovoljava zahteve projektovanja. Takodje, većina nelinearnih problema se može rešiti oslanjanjem na numeričke metode. U radu se \cite{inicijalna} kao alternativa optimizacionim metodama predla"zu ad hoc strategije gde se implicitno formira upravljanje na bazi upravljanja veli"cina kao "sto je energija sistema. \\
 	
-	Nakon što se izgeneriše trajektorija, potrebno je isprojektovati kontroler koji će pratiti zadati putanju. U radu \cite{inicijalna} se predla"zu dve metode za stabilizaciju klatna. Prvi pristup podrazumeva projektovanje globalnog LQR kontrolera na osnovu linearizovanog modela u ravnote"znom stanju. Mana ovog pristupa je to "sto se karakteristike sistema zna"cajno menjaju u zavisnosti od polo"zaja klatna, pa bi ovakav kontroler morao da ima lo"se performanse zbog ve\'ce potrebe za robusno"s\'cu. Drugi pristup podrazumeva projektovanje niza lokalnih LQR kontrolera za odre\dj ene sekcije du"z trajektorije. Prednost ovog pristupa je to "sto se mogu posti\'ci bolje performanse usled ve\'ce robustnosti sistema du"z trajektorije.  \\[16pt]
+	Nakon što se izgeneriše trajektorija, potrebno je isprojektovati kontroler koji će pratiti zadatu putanju. U radu \cite{inicijalna} se predla"zu dve metode za stabilizaciju klatna. Prvi pristup podrazumeva projektovanje globalnog LQR kontrolera na osnovu linearizovanog modela u ravnote"znom stanju. Mana ovog pristupa je to "sto se karakteristike sistema zna"cajno menjaju u zavisnosti od polo"zaja klatna, pa bi ovakav kontroler morao da ima lo"se performanse zbog ve\'ce potrebe za robusno"s\'cu. Drugi pristup podrazumeva projektovanje niza lokalnih LQR kontrolera za odre\dj ene sekcije du"z trajektorije. Prednost ovog pristupa je to "sto se mogu posti\'ci bolje performanse usled ve\'ce robustnosti sistema du"z trajektorije.  \\[16pt]
 	
 
 	\subsection{Generisanje trajektorije}\label{sec:gen_traj}
@@ -580,7 +580,7 @@
 	U ovom slučaju, prvi član je modifikovan, sada uzimajući ugao između trenutnog položaja i vertikale.
 	Dodaje se eksponent \textit{n} izražen u izrazu, što povećava amplitudu ulaza kada je pendulum daleko od uspravnog položaja, ali je manja kada je bliže. U \cite{inicijalna} navode da ovaj zakon omogućava glađi prelaz između nelinearnog upravljanja i upravljanja koji balansira klatno u gornjem položaju. Drugi član ostaje nepromenjen. \\
 	
-	U \cite{ener_shaping} je izveden i testiran zakon upravljanja poznat kao \textit{energy shaping}. Pomenuti zakon upravljanja je izveden na osnovu inevrznog klatna koji rotira samo oko vertikalne ose i glasi: \\
+	U \cite{ener_shaping} je izveden i testiran zakon upravljanja poznat kao \textit{energy shaping}. Pomenuti zakon upravljanja je izveden na osnovu inverznog klatna koji rotira samo oko vertikalne ose i glasi: \\
 	
 	\begin{equation}
 		u = \operatorname{sat}(k_1 (\dot\alpha + k_2 \cos(\beta) \dot\beta)).
@@ -591,7 +591,7 @@
 	
 	U ovom radu, koristili smo model prediktivnog upravljanja (engl. \emph{Model Predictive Control}, MPC) kao pristup za optimalnu kontrolu. \\
 	
-	MPC koristi matematički model sistema kako bi predvidio buduće ponašanje sistema na osnovu trenutnog stanja i unapred zadatih referenci. Model može biti linearni ili nelinearni, ali je ključno da bude dovoljno tačan za predviđanje sistema u predvidjenom vremenskom horizontu. MPC optimizuje kontrolne akcije za određeni horizont vremena unapred. MPC ne razmatra samo trenutno stanje sistema, već razmatra niz budućih koraka, obično u diskretnim vremenskim koracima. Ovaj horizont može biti kratkoročan ili dugoročan, u zavisnosti od zahteva sistema i dinamike procesa. MPC minimizira ili maksimizira funkciju cilja koja predstavlja kriterijum performansi sistema. To može uključivati minimizaciju greške u praćenju referenci, minimizaciju potrošnje energije ili slične ciljeve. MPC primjenjuje samo prvu kontrolnu akciju iz optimizacionog problema, nakon čega se proces ponavlja u svakom diskretnom vremenskom koraku. Ovaj pristup omogućava MPC-u da reaguje na promjene u stanju sistema i spreči akumulaciju grešaka. Njegova sposobnost da predviđa buduće stanje sistema i optimizuje kontrolne akcije čini ga moćnim alatom za upravljanje sistemima sa kompleksnom dinamikom i nelinearnostima \cite{mpc}.\\
+	MPC koristi matematički model sistema kako bi predvidio buduće ponašanje sistema na osnovu trenutnog stanja i unapred zadatih referenci. Model može biti linearni ili nelinearni, ali je ključno da bude dovoljno tačan za predviđanje sistema u predvidjenom vremenskom horizontu. MPC optimizuje kontrolne akcije za određeni horizont vremena unapred. MPC ne razmatra samo trenutno stanje sistema, već razmatra niz budućih koraka, obično u diskretnim vremenskim koracima. Ovaj horizont može biti kratkoročan ili dugoročan, u zavisnosti od zahteva sistema i dinamike procesa. MPC minimizira ili maksimizira funkciju cilja koja predstavlja kriterijum performansi sistema. To može uključivati minimizaciju greške u praćenju referenci, minimizaciju potrošnje energije ili slične ciljeve. MPC primjenjuje samo prvu kontrolnu akciju iz optimizacionog problema, nakon čega se proces ponavlja u svakom diskretnom vremenskom koraku. Ovaj pristup omogućava MPC-u da reaguje na promene u stanju sistema i spreči akumulaciju grešaka. Njegova sposobnost da predviđa buduće stanje sistema i optimizuje kontrolne akcije čini ga moćnim alatom za upravljanje sistemima sa kompleksnom dinamikom i nelinearnostima \cite{mpc}.\\
 	
 	
 	\begin{figure}[!htb]
@@ -613,7 +613,7 @@
 	\end{figure}
 	
 	
-	U radu \cite{inicijalna} autor razmatra primenu optimizacionih metoda nad pojednostavljnim sistemom $\ddot{\alpha}(t) = \omega_0^2 \operatorname{sin}\alpha(t) + u(t)$. Vr"si se direktna optimizacija Hamiltonijana oblika $H(u) = \vect{\lambda}^T(t)\vect{f}(\mathbf{x}(t), u(t)) + \mathcal{L}(\mathbf{x}(t), u(t))~\operatorname{d}t$, gde je $\mathcal{L}(\mathbf{x}(t), u(t))$ lagran"zijan sistema. Lagran"zijan sistema tipi"cno reprezentuje energiju sistema i ima slede\'ci oblik: $\mathcal{L}(\mathbf{x}(t), u(t)) = \frac{1}{q}||\mathbf{x}(t)||_{\mathbf{Q}}^q + \frac{1}{p}||u(t)||_{W}^p$. Prilikom analize ovog sistema autor ne specificira $\mathbf{Q}$, ali se navodi primena $q=2$ norme nad stanjima i primena $p=1$ i $p=2$ norme nad upravljanjem. Primena $p=1$ norme rezultuje upravljanjem koje je "cesto u zaci\'cenju i naglo menja polaritet dok $p = 2$ norma favorizuje glatko upravljanje. \\
+	U radu \cite{inicijalna} autor razmatra primenu optimizacionih metoda nad pojednostavljnim sistemom $\ddot{\alpha}(t) = \omega_0^2 \operatorname{sin}\alpha(t) + u(t)$. Vr"si se direktna optimizacija Hamiltonijana oblika $H(u) = \vect{\lambda}^T(t)\vect{f}(\mathbf{x}(t), u(t)) + \mathcal{L}(\mathbf{x}(t), u(t))~\operatorname{d}t$, gde je $\mathcal{L}(\mathbf{x}(t), u(t))$ lagran"zijan sistema. Lagran"zijan sistema tipi"cno reprezentuje energiju sistema i ima slede\'ci oblik: $\mathcal{L}(\mathbf{x}(t), u(t)) = \frac{1}{q}||\mathbf{x}(t)||_{\mathbf{Q}}^q + \frac{1}{p}||u(t)||_{W}^p$. Prilikom analize ovog sistema autor ne specificira $\mathbf{Q}$, ali se navodi primena $q=2$ norme nad stanjima i primena $p=1$ i $p=2$ norme nad upravljanjem. Primena $p=1$ norme rezultuje upravljanjem koje je "cesto u zasi\'cenju i naglo menja polaritet dok $p = 2$ norma favorizuje glatko upravljanje. \\
 	
 	U op"stem slu"caju odre\dj ivanje optimalnog upravljanja za nelinearni sistem $\dot{\vect{x}}(t) = \vect{f}(\vect{x}(t), \vect{u}(t))$ podrazumeva minimizaciju funkcije tro"ska $J(\mathbf{u}(t)) = \Psi(\mathbf{x}(t)) + \int_{t_0}^{T}\mathcal{L}(\vect{x}(t), \vect{u}(t))~\operatorname{d}t$, pod ograni"cenjem da je zadovoljena dinamika sistema $\dot{\vect{x}}(t) = \vect{f}(\vect{x}(t), \vect{u}(t))$, upravljanje je u dozvoljenim granicama $\mathbf{u}(t)\in \mathbf{\mathcal{U}}$, kao i stanja $\mathbf{x}(t)\in \mathbf{\mathcal{X}}$.  Ovaj optimizacioni problem se re"sava primenom Pontrjaginovog principa maksimuma, odnosno optimalno opravljanje $\vect{u}^*(t)$ je mogu\'ce odrediti minimizacijom Hamiltonijana $H(\vect{u}(t)) = \vect{\lambda}^T(t)\vect{f}(\mathbf{x}(t), \vect{u}(t)) + \mathcal{L}(\mathbf{x}(t), \vect{u}(t))$. Sprovo\dj enje ovog postupka minimizacije podrazumeva re"savanje sistema nelinearnih diferencijalnih jedna"cina: 
 	\begin{align}\label{eq:Hamilton}
@@ -657,7 +657,7 @@
 	\begin{itemize}
 		\item Ispituje je se samo $p=2$ norma.
 		\item Matrica $\mathbf{Q}_T$ je svuda nula osim za stanja $\alpha$ i $\beta$.
-		\item U funkciji cene se ne koristi "clan $\gamma_2||\mathbf{x}(t_i)||^2_{\mathbf{Q}}$, pokazalo se da lo"se uti"ce na konvergenciju. Razlog za mo"ze biti to "sto u odre\dj enim delovima trajektorije treba da pove\'camo amplitudu svih stanja kako bi uspe"sno uspravili klatno.
+		\item U funkciji cene se ne koristi "clan $\gamma_2||\mathbf{x}(t_i)||^2_{\mathbf{Q}}$, pokazalo se da lo"se uti"ce na konvergenciju. Razlog za to mo"ze biti to "sto u odre\dj enim delovima trajektorije treba da pove\'camo amplitudu svih stanja kako bi uspe"sno uspravili klatno.
 	\end{itemize}
 	
 	
@@ -676,7 +676,7 @@
 	\newpage
 	\subsection{Projektovanje kontrolera}\label{sec:LQR}
 	
-	Nakon generisanja referentnih trajektorije potrebno je projekotvati kontroler čiji je zadatak da u što većoj meri isprati željenu trajektoriju i kontroler koji će održavati sistem u željenom, gornjem položaja. \\
+	Nakon generisanja referentnih trajektorije potrebno je projektovati kontroler čiji je zadatak da u što većoj meri isprati željenu trajektoriju i kontroler koji će održavati sistem u željenom, gornjem položaja. \\
 	
 	Linearni kontroleri su validni samo u onom regionu gde je izvršena linearizacija sistema, a kako je zadatak upravlanje nelineranim sistemom potrebno je napraviti ansambl kontrolera. \\
 	
@@ -728,7 +728,7 @@
 	
 	Prelazak između kontrolera vrši se u dva različita režima rada: \\
 	
-	1. Kontrola za podizanje sistema primenjuje se direktno na uređaj. Samo linearni kontroler oko krajnje tačke je aktivan (globalni LQR kontroler). Tranziciji između režima uspravljanja sistema i režima ravnoteže oko uspravnog poožaja se dešava kada se ugao penduluma dovoljno približi nultom položaju ($\beta$ < 18$^\circ$). Ovaj pristup se koristi kada nema referentne putanje, i podizanje sistema se izvodi u zatvorenoj petlji, na primer sa Ad hoc strategijama opisanim u \ref{sec:andhoc}. \\
+	1. Kontrola za podizanje sistema primenjuje se direktno na uređaj. Samo linearni kontroler oko krajnje tačke je aktivan (globalni LQR kontroler). Tranzicija između režima uspravljanja sistema i režima ravnoteže oko uspravnog poožaja se dešava kada se ugao penduluma dovoljno približi nultom položaju ($\beta$ < 18$^\circ$). Ovaj pristup se koristi kada nema referentne putanje, i podizanje sistema se izvodi u zatvorenoj petlji, na primer sa Ad hoc strategijama opisanim u \ref{sec:andhoc}. \\
 	
 	2. Referentna kontrola se primenjuje na uređaj, koji zauzvrat ima zatvoreni skup linearnih kontrolera koji stabilizuju razliku između izvedene putanje i referentne putanje. Ovo se naziva Gain Scheduling controller.\\
 	
@@ -770,7 +770,7 @@
 		\caption{Arhitektura Gain Scheduling kontrolera. Vektor $K_i$, $i \in \{1, \ldots, 6\}$ se bira u skladu sa trenutnim uglom klatna \cite{inicijalna}}
 		\label{fig:archGain}
 	\end{figure} 
-	Primenom zakona upravljanja oblika $\hat{\vect{u}} = - \vect{K}\hat{\vect{x}}$ transformisani sistem dovodimo u koordinatni po"cetak, u tom slu"caju va"zi va"zi $\hat{\vect{x}} = \vect{0} \rightarrow \vect{x} = \vect{x}_r$. Zakon upravljanj iz transformisanog sistema mo"zemo zapisati kao $\vect{u} = -\vect{K}(\vect{x} - \vect{x}_r) + \vect{u}_r$. Ako primenimo izvedenu relaciju iz jedna"cine (\ref{eq:ss_ff_matrix}) mo"zemo zapisati:
+	Primenom zakona upravljanja oblika $\hat{\vect{u}} = - \vect{K}\hat{\vect{x}}$ transformisani sistem dovodimo u koordinatni po"cetak, u tom slu"caju va"zi $\hat{\vect{x}} = \vect{0} \rightarrow \vect{x} = \vect{x}_r$. Zakon upravljanja iz transformisanog sistema mo"zemo zapisati kao $\vect{u} = -\vect{K}(\vect{x} - \vect{x}_r) + \vect{u}_r$. Ako primenimo izvedenu relaciju iz jedna"cine (\ref{eq:ss_ff_matrix}) mo"zemo zapisati:
 	\begin{equation}
 		\vect{u} = -\vect{K}\vect{x} + \begin{bmatrix} \vect{K} &  \vect{I} \end{bmatrix}
 		\begin{bmatrix} \vect{A} &  \vect{B} \\  \vect{C} &  \vect{D} \end{bmatrix}^{-1}
@@ -802,11 +802,11 @@
 	
 	U ovoj sekciji su predstavljeni rezultati simulacija pomo\'cu kojih su verifikovani isprojektovani algoritmi. Implementiran je globalni LQR kao i \emph{gain scheduling}. Primena razli"citih kontrolera za stabilizaciju nije rezultovala velikim razlikama u trajektorijama, zbog toga u sekciji (\ref{sec:grafici}) su prikazani samo grafici sa \emph{gain scheduling} kontrolerom za stabilizaciju. \\ 
 	
-	Sve trajektorije su generisane \emph{offline} primenom egzaktnog modela. Prilikom dovo\dj enja klatna u uspravan generisanjo upravljanje i trajektorija u prostoru stanja se koriste kao referenca. Robustnost na gre"ske u modeliranju je ispitana naknadnim uvo\dj enjem $5\sigma$ gre"saka u odnosu na vrednosti iz tabele \ref{tab:tab1}.\\
+	Sve trajektorije su generisane \emph{offline} primenom egzaktnog modela. Prilikom dovo\dj enja klatna u uspravan generisano upravljanje i trajektorija u prostoru stanja se koriste kao referenca. Robustnost na gre"ske u modeliranju je ispitana naknadnim uvo\dj enjem $5\sigma$ gre"saka u odnosu na vrednosti iz tabele \ref{tab:tab1}.\\
 	
-	Svi razmatrani algortmi su uspe"sno doveli klatno u uspravan polo"zaj. U slu"caju primene globalnog LQR kontroler se uklju"cuje ako je ugao $|\beta| \leq 16^o$, dok je \emph{gain scheduling} uvek uklju"cen. Nakon "sto ugao $|\beta|$ dostigne granicu od $16^o$ referentna trajektorija se postavlja na nulu i stabilizacija klatna se u potpunosti prepu"sta kontroleru.\\
+	Svi razmatrani algoritmi su uspe"sno doveli klatno u uspravan polo"zaj. U slu"caju primene globalnog LQR kontroler se uklju"cuje ako je ugao $|\beta| \leq 16^o$, dok je \emph{gain scheduling} uvek uklju"cen. Nakon "sto ugao $|\beta|$ dostigne granicu od $16^o$ referentna trajektorija se postavlja na nulu i stabilizacija klatna se u potpunosti prepu"sta kontroleru.\\
 	
-	Prilikom simulacije prisutan je merni "sum. Analiza uticaja mernog "suma je izostavljena zbog prirode LQR kontroler. U pitanju je kontroler sa "cistim proporcionalnim dejstvom i kao takav nema osobine potiskivanja "suma (za razliku od kontrolera sa integralnim dejstvom). Mogu\'cu je delimi"cno smanjiti osetljivost na "sum prilikom projektovanja uvo\dj enjem ve\'ce cene upravljanja.\\
+	Prilikom simulacije prisutan je merni "sum. Analiza uticaja mernog "suma je izostavljena zbog prirode LQR kontroler. U pitanju je kontroler sa "cistim proporcionalnim dejstvom i kao takav nema osobine potiskivanja "suma (za razliku od kontrolera sa integralnim dejstvom). Mogu\'ce je delimi"cno smanjiti osetljivost na "sum prilikom projektovanja uvo\dj enjem ve\'ce cene upravljanja.\\
 	
 	Kako bi uporedili algoritme za uspravljanje klatna uvedene su slede\'ce metrike:
 	\begin{itemize}
