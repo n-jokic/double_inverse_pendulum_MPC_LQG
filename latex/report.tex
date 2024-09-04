@@ -186,7 +186,7 @@
 	
 	U zavisnosti od pristupa koji se koristi, za dizajn kontrolera potrebni su različiti tipovi modela. Pristupi koji se primenjuju za podizanje klatna iz donjeg u gornji položaj, kao što su ad hoc i optimalno upravljanje zahtevaju nelinearne modele, jer sistem prati putanju u prostoru stanja koja prolazi kroz različite regione sa različitom dinamikom. S druge strane, održavanje klatna u gornjem položaju zahteva samo kontroler koji može raditi u nekoj okolini gornjeg položaja, te je za postizanje ovog cilja potreban samo linearni model.  \\
 	
-	Linearni modeli su mogu dobiti na dva načina: Jakobijan linearnizacijom nelinearnog modela u okolini želeljenog ravnotežnog stanja ili tehnikama identifikacije, gde se parametri linearnog modela procenjuju iz ekseprimenata. U otvorenoj sprezi, gornji položaj je nestabilan, i ako se primeni mala smetnja na ulazu, izlazni signal će rasti bez ograničenja. Da bi se izbegao ovaj problem, potrebno je prikupiti podatke u slučaju kada se na sistem primeni upravljanje sa stabilnim kontrolerom.  Oblast identifikacije je detaljno proučavana krajem 1960-ih i početkom 1970-ih  \cite{identifikacija}. Glavni izazov je bio kako ukloniti šum koji se kontaminira sa ulazom i izlazom sistema.  \\
+	Linearni modeli su mogu dobiti na dva načina: Jakobijan linearnizacijom nelinearnog modela u okolini želeljenog ravnotežnog stanja ili tehnikama identifikacije, gde se parametri linearnog modela procenjuju iz eksperimenata. U otvorenoj sprezi, gornji položaj je nestabilan, i ako se primeni mala smetnja na ulazu, izlazni signal će rasti bez ograničenja. Da bi se izbegao ovaj problem, potrebno je prikupiti podatke u slučaju kada se na sistem primeni upravljanje sa stabilnim kontrolerom.  Oblast identifikacije je detaljno proučavana krajem 1960-ih i početkom 1970-ih  \cite{identifikacija}. Glavni izazov je bio kako ukloniti šum koji se kontaminira sa ulazom i izlazom sistema.  \\
 	
 	
 	Furuta pendulum je dinamički sistem koji se sastoji od dve osnovne komponente: \\
@@ -218,7 +218,7 @@
 	\end{figure}
 	
 	
-	Na slici (\ref{fig:schema}) prikazan je šematski prikaz inverznog klatna. Horizontalna ruka je predstavljena segmentom $P_0$ i $P_1$, dok je klatno predstavljeno segmentom $P_1$ i $P_2$, ugao $\alpha$ predstavlja zglob izmedju baze i horizontalne ruke FP, dok $\beta$ predstavlja ugao izmedju horizontalne ruke i klatna.
+	Na slici (\ref{fig:schema}) prikazan je šematski prikaz inverznog klatna. Horizontalna ruka je predstavljena segmentom $P_0$ i $P_1$, dok je klatno predstavljeno segmentom $P_1$ i $P_2$, ugao $\alpha$ predstavlja zglob između baze i horizontalne ruke FP, dok $\beta$ predstavlja ugao između horizontalne ruke i klatna.
 	\\
 	
 	Nelinearni model FP izveden je iz Langranžove mehanike. Energija sistema koji se sastoji od N krutih tela može se napisati kao zbir kinetičke energije $\tau$ i potencijalne energije $\nu$ \cite{inicijalna}. 
@@ -262,8 +262,8 @@
 	promenljive se definišu kao: $x_1$ = $\alpha$, $x_2$ = $\dot\alpha$,  $x_3$ = $\beta$, $x_4$ = $\dot\beta$, $x_5$ = $i$. \\
 	
 	
-	Pri modelovanju i odredjivanju parametara sistema
-	zanemarene su dinamičke karakteristike sistema: ne-elektične disipativne sile modelovane su kao viskozno trenje proporcionalnoj ugaonoj brzini zglobova, spoj između tela smatra se savršenim, promena električnih karakteristika usled promene temperature aktuatora, zanemarivanje kapaciteta i induktivnosti žica raspodeljenih u prostoru i mehanički delovi su smatrani potpuno krutim.\\
+	Pri modelovanju i određivanju parametara sistema
+	zanemarene su dinamičke karakteristike sistema: ne-elektične disipativne sile modelovane su kao viskozno trenje proporcionalnoj ugaonoj brzini zglobova, spoj između tela smatra se savršenim, uticaj promena električnih karakteristika usled promene temperature aktuatora, zanemarivanje kapaciteta i induktivnosti žica raspodeljenih u prostoru i mehanički delovi su smatrani potpuno krutim.\\
 	
 	
 	\newpage
@@ -321,7 +321,7 @@
 		\vect{x_{k+1}} = \vect{x_{k}} + \Delta t \vect{f}(\vect{x_k}, \vect{u_k}).
 	\end{equation}.
 	
-	Me\dj utim, primena Ojlerove metode nije adekvatna za ovaj sistem usled velikih numeri"ckih gre"saka i nestabilnosti rezultuju\'ceg modela. Dodatnim koraka diskretizacije $\Delta t$ je mogu\'ce stabilizovati Ojlerovu metodu, ali to nije usvojeno kao prihvatljivo re"senje.\\
+	Me\dj utim, primena Ojlerove metode nije adekvatna za ovaj sistem usled velikih numeri"ckih gre"saka i nestabilnosti rezultuju\'ceg modela. Dodatnim korakom diskretizacije $\Delta t$ je mogu\'ce stabilizovati Ojlerovu metodu, ali to nije usvojeno kao prihvatljivo re"senje.\\
 	
 	Problem nestabilnog modela je re"sen primenom Runge-Kuta 4 (eng. \textit{Runge-Kutta}) metode numeri"cke integracije, dalje u tekstu RK4. Primenom RK4 integracija se vr"si na slede\'ci na"cin: 
 	\begin{align} \label{eq:RK4}
@@ -486,7 +486,7 @@
 		\exists \epsilon > 0 : ||\vect{x(0)} - \vect{\bar{x}}|| < \epsilon \Rightarrow \lim_{t \to \infty} \vect{x}(t) = \vect{\bar{x}}. \quad
 	\end{align}
 	
-	Asimptotska stabilnost nelinearnog sistema može se proceniti linearnizovanim sistemima dobijenim kod svake fiksne tačke pomoću Ljapunovljeve indirektne metode. Moguće je zaključiti da, za linearnizovani sistem (\ref{eg:lin_mod}):
+	Asimptotska stabilnost nelinearnog sistema može se proceniti linearizovanim sistemima dobijenim kod svake fiksne tačke pomoću Ljapunovljeve indirektne metode. Moguće je zaključiti da, za linearizovani sistem (\ref{eg:lin_mod}):
 	\begin{enumerate}
 		\item ako sve sopstvene vrednosti matrice \(A\) imaju negativne realne delove, tada je fiksna tačka nelinearnog sistema stabilna;
 		\item ako bar jedna sopstvena vrednost matrice \(A\) ima pozitivan realni deo, tada je fiksna tačka nelinearnog sistema nestabilna;
@@ -544,7 +544,7 @@
 	
 	Često je korisno dizajnirati trajektorije van mreže, tj. definisati putanju u prostoru stanja koju sistem treba da izvede unapred. U takvoj situaciji nismo ograničeni vremenom ili računski potrebnom snagom da se izvrše proračuni tokom samog procesa, što je posebno korisno kod složenih sistema sa brzom dinamikom. Putanje se dizajniraju koristeći model sistema, analizirajući njegov odgovor na dostupne ulaze. Ova strategija se široko koristi u robotici, gde postoji potreba za planiranjem kretanja mobilnih robota u ograničenim prostorima \cite{inicijalna}. \\
 	
-	Jedan od pristupa za generisanje trajektorije je optimalno upravljanje,  koje se bavi problemom određivanja ulaza dinamičkog sistema koji opitmizuje (maksimizuje ili minimizuje) odredjenu funkciju troška koja govori o performansama sistema. Sa odgovrajućom funkcijom troška mogu se odrediti putanja i zakon upravljanja koji zadovoljava zahteve projektovanja. Takodje, većina nelinearnih problema se može rešiti oslanjanjem na numeričke metode. U radu se \cite{inicijalna} kao alternativa optimizacionim metodama predla"zu ad hoc strategije gde se implicitno formira upravljanje na bazi upravljanja veli"cina kao "sto je energija sistema. \\
+	Jedan od pristupa za generisanje trajektorije je optimalno upravljanje,  koje se bavi problemom određivanja ulaza dinamičkog sistema koji optimizuje (maksimizuje ili minimizuje) određenu funkciju troška koja govori o performansama sistema. Sa odgovarajućom funkcijom troška mogu se odrediti putanja i zakon upravljanja koji zadovoljava zahteve projektovanja. Takodje, većina nelinearnih problema se može rešiti oslanjanjem na numeričke metode. U radu se \cite{inicijalna} kao alternativa optimizacionim metodama predla"zu ad hoc strategije gde se implicitno formira upravljanje na bazi upravljanja veli"cina kao "sto je energija sistema. \\
 	
 	Nakon što se izgeneriše trajektorija, potrebno je isprojektovati kontroler koji će pratiti zadatu putanju. U radu \cite{inicijalna} se predla"zu dve metode za stabilizaciju klatna. Prvi pristup podrazumeva projektovanje globalnog LQR kontrolera na osnovu linearizovanog modela u ravnote"znom stanju. Mana ovog pristupa je to "sto se karakteristike sistema zna"cajno menjaju u zavisnosti od polo"zaja klatna, pa bi ovakav kontroler morao da ima lo"se performanse zbog ve\'ce potrebe za robusno"s\'cu. Drugi pristup podrazumeva projektovanje niza lokalnih LQR kontrolera za odre\dj ene sekcije du"z trajektorije. Prednost ovog pristupa je to "sto se mogu posti\'ci bolje performanse usled ve\'ce robustnosti sistema du"z trajektorije.  \\[16pt]
 	
@@ -591,7 +591,7 @@
 	
 	U ovom radu, koristili smo model prediktivnog upravljanja (engl. \emph{Model Predictive Control}, MPC) kao pristup za optimalnu kontrolu. \\
 	
-	MPC koristi matematički model sistema kako bi predvidio buduće ponašanje sistema na osnovu trenutnog stanja i unapred zadatih referenci. Model može biti linearni ili nelinearni, ali je ključno da bude dovoljno tačan za predviđanje sistema u predvidjenom vremenskom horizontu. MPC optimizuje kontrolne akcije za određeni horizont vremena unapred. MPC ne razmatra samo trenutno stanje sistema, već razmatra niz budućih koraka, obično u diskretnim vremenskim koracima. Ovaj horizont može biti kratkoročan ili dugoročan, u zavisnosti od zahteva sistema i dinamike procesa. MPC minimizira ili maksimizira funkciju cilja koja predstavlja kriterijum performansi sistema. To može uključivati minimizaciju greške u praćenju referenci, minimizaciju potrošnje energije ili slične ciljeve. MPC primjenjuje samo prvu kontrolnu akciju iz optimizacionog problema, nakon čega se proces ponavlja u svakom diskretnom vremenskom koraku. Ovaj pristup omogućava MPC-u da reaguje na promene u stanju sistema i spreči akumulaciju grešaka. Njegova sposobnost da predviđa buduće stanje sistema i optimizuje kontrolne akcije čini ga moćnim alatom za upravljanje sistemima sa kompleksnom dinamikom i nelinearnostima \cite{mpc}.\\
+	MPC koristi matematički model sistema kako bi predvidio buduće ponašanje sistema na osnovu trenutnog stanja i unapred zadatih referenci. Model može biti linearni ili nelinearni, ali je ključno da bude dovoljno tačan za predviđanje sistema u predviđenom vremenskom horizontu. MPC optimizuje kontrolne akcije za određeni horizont vremena unapred. MPC ne razmatra samo trenutno stanje sistema, već razmatra niz budućih koraka, obično u diskretnim vremenskim koracima. Ovaj horizont može biti kratkoročan ili dugoročan, u zavisnosti od zahteva sistema i dinamike procesa. MPC minimizira ili maksimizira funkciju cilja koja predstavlja kriterijum performansi sistema. To može uključivati minimizaciju greške u praćenju referenci, minimizaciju potrošnje energije ili slične ciljeve. MPC primjenjuje samo prvu kontrolnu akciju iz optimizacionog problema, nakon čega se proces ponavlja u svakom diskretnom vremenskom koraku. Ovaj pristup omogućava MPC-u da reaguje na promene u stanju sistema i spreči akumulaciju grešaka. Njegova sposobnost da predviđa buduće stanje sistema i optimizuje kontrolne akcije čini ga moćnim alatom za upravljanje sistemima sa kompleksnom dinamikom i nelinearnostima \cite{mpc}.\\
 	
 	
 	\begin{figure}[!htb]
